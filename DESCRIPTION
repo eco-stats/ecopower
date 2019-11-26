@@ -1,10 +1,9 @@
 Package: ecopower
 Type: Package
-Title: Power estimates for multivariate abundance data.
+Title: Power estimates for multivariate abundance data
 Version: 0.1.0
 Authors@R: person("Ben", "Maslen", email = "b.maslen@unsw.edu.au", 
     role = c("aut", "cre"))
-Maintainer: b.maslen@unsw.edu.au
 Description: Provides power estimates by simulation for multivariate 
     abundance data to be used for sample size estimates. The package 
     also provides functions for parameterising multivariate effect
