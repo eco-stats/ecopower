@@ -3,7 +3,6 @@ rm(list = ls())
 
 
 #fit the model
-library(devtools)
 library(mvabund)
 library(MASS)
 library(psych)
