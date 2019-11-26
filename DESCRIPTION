@@ -16,5 +16,5 @@ Imports: MASS (>= 7.3),
 	 parallel (>= 3.5.3)
 Encoding: UTF-8
 LazyData: true
-License: None
+License: LGPL (>= 2.1)
 RoxygenNote: 7.0.0

@@ -73,7 +73,7 @@ glm.spid <- manyglm(spiddat~soil.dry, family="negative.binomial",data=X)
 effect.mat <- effect.alt(glm.spid,effect.size=3,pred="soil.dry",increasers,decreasers)
 extend.fit <- extend.manyglm(glm.spid,N=10,
                              coeffs=effect.mat) #not needed to be executed for power estimate
-powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat)
+powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat,cl=makeCluster(detectCores()-1))
 
 #Find power for categorical predictor with 4 levels, N=10, effect.size=1.5
 X$Treatment <- rep(c("A","B","C","D"),each=7)
@@ -81,19 +81,19 @@ glm.spid <- manyglm(spiddat~Treatment, family="negative.binomial",data=X)
 effect.mat <- effect.alt(glm.spid,effect.size=1.5,pred="Treatment",increasers,decreasers)
 extend.fit <- extend.manyglm(glm.spid,N=20,
                              coeffs=effect.mat) #not needed to be executed for power estimate
-powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat)
+powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat,cl=makeCluster(detectCores()-1))
 
 #change effect size parameterisation
 effect.mat <- effect.alt(glm.spid,effect.size=1.5,
                          pred="Treatment",increasers,decreasers,
                          K=c(3,1,2),OrderedLevels = FALSE)
 powersim.manyglm(glm.spid,N=20,pred="Treatment",
-                 coeffs=effect.mat)
+                 coeffs=effect.mat,cl=makeCluster(detectCores()-1))
 
 #change sampling design
 X_new <- X
 X_new$Treatment[6:7] <- c("B","B")
 extend.fit <- extend.manyglm(glm.spid,N=20,
                              coeffs=effect.mat,use.design = FALSE,newdata=X_new) #not needed to be executed for power estimate
-powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat,use.design = FALSE,newdata=X_new)
+powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat,use.design = FALSE,newdata=X_new,cl=makeCluster(detectCores()-1))
 }
