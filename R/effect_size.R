@@ -1,4 +1,4 @@
-#' @name Effect.alt
+#' @name effect.alt
 #'
 #' @title Specify multivariate effect sizes.
 #'
