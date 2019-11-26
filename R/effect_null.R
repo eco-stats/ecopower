@@ -11,7 +11,6 @@
 #'@param fit objects of class manyglm, typically the result of a call to \link[mvabund]{manyglm}.
 #'@param pred Name of predictor of interest in quotes.
 #'@import mvabund
-#'@export
 #'@examples
 #'library(mvabund)
 #'data(spider)
@@ -21,6 +20,7 @@
 #' #Find null effect size for continuous predictor
 #' glm.spid <- manyglm(spiddat~soil.dry, family="negative.binomial",data=X)
 #' coeff.null <- effect.null(glm.spid,pred="soil.dry")
+#' @export
 effect.null <- function(fit,pred){
   coeff  <- fit$coefficients
 

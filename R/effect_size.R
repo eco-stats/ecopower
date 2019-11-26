@@ -60,9 +60,9 @@
 #'@import psych
 #'@import matrixcalc
 #'@import MASS
-#'@export
 #'@examples
 #' library(mvabund)
+#' library(parallel)
 #' data(spider)
 #' spiddat <- mvabund(spider$abund)
 #' X <- data.frame(spider$x)
@@ -76,7 +76,7 @@
 #' effect.mat <- effect.alt(glm.spid,effect.size=3,pred="soil.dry",increasers,decreasers)
 #' extend.fit <- extend.manyglm(glm.spid,N=10,
 #'                              coeffs=effect.mat) #not needed to be executed for power estimate
-#' powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat,cl=makeCluster(detectCores()-1))
+#' powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat,cl=makeCluster(1))
 #'
 #' #Find power for categorical predictor with 4 levels, N=10, effect.size=1.5
 #' X$Treatment <- rep(c("A","B","C","D"),each=7)
@@ -92,6 +92,7 @@
 #'                          K=c(3,1,2),OrderedLevels = FALSE)
 #' powersim.manyglm(glm.spid,N=20,pred="Treatment",
 #'                  coeffs=effect.mat,cl=makeCluster(detectCores()-1))
+#' @export
 effect.alt <- function(fit,effect.size,increasers,decreasers,pred,OrderedLevels = TRUE,K){
   coeff  <- fit$coefficients
 
