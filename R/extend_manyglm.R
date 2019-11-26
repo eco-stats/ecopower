@@ -47,9 +47,6 @@
 #'@param newdata Data frame of same size as the original data frame from the inputed `manyglm` fit, that specifies
 #'a different design of interest.
 #'@import mvabund
-#'@import psych
-#'@import matrixcalc
-#'@import MASS
 #'@export
 #'@examples
 #'library(mvabund)
