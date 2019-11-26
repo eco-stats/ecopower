@@ -86,6 +86,7 @@
 #'                          K=c(3,1,2),OrderedLevels = FALSE)
 #' powersim.manyglm(glm.spid,N=20,pred="Treatment",
 #'                  coeffs=effect.mat,use.design = FALSE,newdata=X_new,cl=makeCluster(1))
+
 effect.alt <- function(fit,effect.size,increasers,decreasers,pred,OrderedLevels = TRUE,K){
   coeff  <- fit$coefficients
 

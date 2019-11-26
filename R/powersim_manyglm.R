@@ -78,6 +78,7 @@
 #'                              coeffs=effect.mat,use.design = FALSE,newdata=X_new) #not needed to be executed for power estimate
 #' powersim.manyglm(glm.spid,N=20,pred="Treatment",
 #' coeffs=effect.mat,use.design = FALSE,newdata=X_new,cl=makeCluster(1))
+
 powersim.manyglm <- function(fit,N,coeffs = coef(fit),
                              pred,nsim = 1000,test="score",alpha=0.05,use.design=TRUE,
                              newdata=NULL,cl = makeCluster(detectCores()),coeff.null= effect.null(fit,pred)){

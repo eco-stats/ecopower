@@ -19,6 +19,7 @@
 #' #Find null effect size for continuous predictor
 #' glm.spid <- manyglm(spiddat~soil.dry, family="negative.binomial",data=X)
 #' coeff.null <- effect.null(glm.spid,pred="soil.dry")
+
 effect.null <- function(fit,pred){
   coeff  <- fit$coefficients
 
