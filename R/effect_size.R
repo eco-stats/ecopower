@@ -56,6 +56,10 @@
 #'order of factor variables. See description for further details.
 #'@param K If `OrderedLevels=FALSE`, the exponent of the effect.size for each level of a factor variable.
 #'@import mvabund
+#'@import parallel
+#'@import psych
+#'@import matrixcalc
+#'@import MASS
 #'@export
 #'@examples
 #' library(mvabund)
@@ -72,7 +76,7 @@
 #' effect.mat <- effect.alt(glm.spid,effect.size=3,pred="soil.dry",increasers,decreasers)
 #' extend.fit <- extend.manyglm(glm.spid,N=10,
 #'                              coeffs=effect.mat) #not needed to be executed for power estimate
-#' powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat)
+#' powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat,cl=makeCluster(detectCores()-1))
 #'
 #' #Find power for categorical predictor with 4 levels, N=10, effect.size=1.5
 #' X$Treatment <- rep(c("A","B","C","D"),each=7)
@@ -80,14 +84,14 @@
 #' effect.mat <- effect.alt(glm.spid,effect.size=1.5,pred="Treatment",increasers,decreasers)
 #' extend.fit <- extend.manyglm(glm.spid,N=20,
 #'                              coeffs=effect.mat) #not needed to be executed for power estimate
-#' powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat)
+#' powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat,cl=makeCluster(detectCores()-1))
 #'
 #' #change effect size parameterisation
 #' effect.mat <- effect.alt(glm.spid,effect.size=1.5,
 #'                          pred="Treatment",increasers,decreasers,
 #'                          K=c(3,1,2),OrderedLevels = FALSE)
 #' powersim.manyglm(glm.spid,N=20,pred="Treatment",
-#'                  coeffs=effect.mat)
+#'                  coeffs=effect.mat,cl=makeCluster(detectCores()-1))
 effect.alt <- function(fit,effect.size,increasers,decreasers,pred,OrderedLevels = TRUE,K){
   coeff  <- fit$coefficients
 

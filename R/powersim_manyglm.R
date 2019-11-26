@@ -41,6 +41,9 @@
 #'@param coeff.null Coefficient matrix under the null hypothesis. Defaults to being specified by \link[ecopower]{effect.null}.
 #'@import mvabund
 #'@import parallel
+#'@import psych
+#'@import matrixcalc
+#'@import MASS
 #'@export
 #'@examples
 #'library(mvabund)
