@@ -36,11 +36,11 @@ Response variables are simulated through a copula model by first extracting Gaus
 as Dunn-Smyth residuals, which are obtained from abundances \eqn{y_{ij}} with marginal distributions \eqn{F_j}
 which have been specified via the original `manyglm` model `fit`;
 
-\deqn{z_{ij} = \Phi^{-1}\{F_{j}(y_{ij}^-) + u_{ij} F_{j}(y_{ij})\}}.
+\deqn{z_{ij} = \Phi^{-1}{F_{j}(y_{ij}^-) + u_{ij} F_{j}(y_{ij})}}
 
  These scores then follow a multivariate Gaussian distribution with zero mean and covariance structure \eqn{\Sigma},
 
- \deqn{z_{ij} ~ N_p(0,\Sigma)}.
+ \deqn{z_{ij} ~ N_p(0,\Sigma)}
 
 To avoid estimating a large number \eqn{p(p-1)/2} pairwise correlations within \eqn{\Sigma}, factor analysis is utilised
 with one latent factor variable, which can be interpreted as an unobserved environmental covariate.
