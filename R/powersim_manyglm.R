@@ -40,6 +40,7 @@
 #'machine.
 #'@param coeff.null Coefficient matrix under the null hypothesis. Defaults to being specified by \link[ecopower]{effect.null}.
 #'@import mvabund
+#'@import parallel
 #'@export
 #'@examples
 #'library(mvabund)
