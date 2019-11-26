@@ -39,6 +39,8 @@
 #'@param cl Number of clusters for parrelel computing. Defaults to the total number of clusters available on the
 #'machine.
 #'@param coeff.null Coefficient matrix under the null hypothesis. Defaults to being specified by \link[ecopower]{effect.null}.
+#'@import mvabund
+#'@export
 #'@examples
 #'library(mvabund)
 #'data(spider)
@@ -54,7 +56,7 @@
 #' effect.mat <- effect.alt(glm.spid,effect.size=3,pred="soil.dry",increasers,decreasers)
 #' extend.fit <- extend.manyglm(glm.spid,N=10,
 #'                              coeffs=effect.mat) #not needed to be executed for power estimate
-#' powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat,cl=makeCluster(1))
+#' powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat)
 #'
 #' #Find power for categorical predictor with 4 levels, N=10, effect.size=1.5
 #' X$Treatment <- rep(c("A","B","C","D"),each=7)
@@ -62,14 +64,14 @@
 #' effect.mat <- effect.alt(glm.spid,effect.size=1.5,pred="Treatment",increasers,decreasers)
 #' extend.fit <- extend.manyglm(glm.spid,N=20,
 #'                              coeffs=effect.mat) #not needed to be executed for power estimate
-#' powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat,cl=makeCluster(1))
+#' powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat)
 #'
 #' #change effect size parameterisation
 #' effect.mat <- effect.alt(glm.spid,effect.size=1.5,
 #'                          pred="Treatment",increasers,decreasers,
 #'                          K=c(3,1,2),OrderedLevels = FALSE)
 #' powersim.manyglm(glm.spid,N=20,pred="Treatment",
-#'                  coeffs=effect.mat,use.design = FALSE,newdata=X_new,cl=makeCluster(1))
+#'                  coeffs=effect.mat)
 #'
 #'#change sampling design
 #' X_new <- X
@@ -77,8 +79,7 @@
 #' extend.fit <- extend.manyglm(glm.spid,N=20,
 #'                              coeffs=effect.mat,use.design = FALSE,newdata=X_new) #not needed to be executed for power estimate
 #' powersim.manyglm(glm.spid,N=20,pred="Treatment",
-#' coeffs=effect.mat,use.design = FALSE,newdata=X_new,cl=makeCluster(1))
-
+#' coeffs=effect.mat,use.design = FALSE,newdata=X_new)
 powersim.manyglm <- function(fit,N,coeffs = coef(fit),
                              pred,nsim = 1000,test="score",alpha=0.05,use.design=TRUE,
                              newdata=NULL,cl = makeCluster(detectCores()),coeff.null= effect.null(fit,pred)){

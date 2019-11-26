@@ -46,6 +46,8 @@
 #'the data frame `newdata`.
 #'@param newdata Data frame of same size as the original data frame from the inputed `manyglm` fit, that specifies
 #'a different design of interest.
+#'@import mvabund
+#'@export
 #'@examples
 #'library(mvabund)
 #'data(spider)
@@ -61,7 +63,7 @@
 #' effect.mat <- effect.alt(glm.spid,effect.size=3,pred="soil.dry",increasers,decreasers)
 #' extend.fit <- extend.manyglm(glm.spid,N=10,
 #'                              coeffs=effect.mat) #not needed to be executed for power estimate
-#' powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat,cl=makeCluster(1))
+#' powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat)
 #'
 #' #Find power for categorical predictor with 4 levels, N=10, effect.size=1.5
 #' X$Treatment <- rep(c("A","B","C","D"),each=7)
@@ -69,22 +71,21 @@
 #' effect.mat <- effect.alt(glm.spid,effect.size=1.5,pred="Treatment",increasers,decreasers)
 #' extend.fit <- extend.manyglm(glm.spid,N=20,
 #'                              coeffs=effect.mat) #not needed to be executed for power estimate
-#' powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat,cl=makeCluster(1))
+#' powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat)
 #'
 #' #change effect size parameterisation
 #' effect.mat <- effect.alt(glm.spid,effect.size=1.5,
 #'                          pred="Treatment",increasers,decreasers,
 #'                          K=c(3,1,2),OrderedLevels = FALSE)
 #' powersim.manyglm(glm.spid,N=20,pred="Treatment",
-#'                  coeffs=effect.mat,use.design = FALSE,newdata=X_new,cl=makeCluster(1))
+#'                  coeffs=effect.mat)
 #'
 #'#change sampling design
 #' X_new <- X
 #' X_new$Treatment[6:7] <- c("B","B")
 #' extend.fit <- extend.manyglm(glm.spid,N=20,
 #'                              coeffs=effect.mat,use.design = FALSE,newdata=X_new) #not needed to be executed for power estimate
-#' powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat,use.design = FALSE,newdata=X_new,cl=makeCluster(1))
-
+#' powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat,use.design = FALSE,newdata=X_new)
 extend.manyglm <- function(fit,N, coeffs = coef(fit),use.design=TRUE,newdata){
   #extract the dun-smyth residuals
   Z_ds <- residuals(fit)
