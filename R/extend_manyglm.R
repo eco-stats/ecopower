@@ -15,7 +15,7 @@
 #' as Dunn-Smyth residuals, which are obtained from abundances \eqn{y_{ij}} with marginal distributions \eqn{F_j}
 #' which have been specified via the original `manyglm` model `fit`;
 #'
-#' \deqn{z_{ij} = \Phi^{-1}\{F_{j}(y_{ij}^-) + u_{ij} F_{j}(y_{ij})\}}.
+#' \deqn{z_{ij} = \Phi^{-1}{F_{j}(y_{ij}^-) + u_{ij} F_{j}(y_{ij})}}.
 #'
 #'  These scores then follow a multivariate Gaussian distribution with zero mean and covariance structure \eqn{\Sigma},
 #'
