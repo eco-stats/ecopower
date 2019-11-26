@@ -82,17 +82,19 @@ decreasers <- c("Alopcune","Alopfabr" ,"Zoraspin")
 
 #Find power for continuous predictor, N=20 and effect.size=3
 glm.spid <- manyglm(spiddat~soil.dry, family="negative.binomial",data=X)
-effect.mat <- effect.alt(glm.spid,effect.size=3,pred="soil.dry",increasers,decreasers)
+effect.mat <- effect.alt(glm.spid,effect.size=3,
+       pred="soil.dry",increasers,decreasers)
 extend.fit <- extend.manyglm(glm.spid,N=10,
-                             coeffs=effect.mat) #not needed to be executed for power estimate
+       coeffs=effect.mat) #not needed to be executed for power estimate
 powersim.manyglm(glm.spid,N=20,pred="soil.dry",coeffs=effect.mat)
 
 #Find power for categorical predictor with 4 levels, N=10, effect.size=1.5
 X$Treatment <- rep(c("A","B","C","D"),each=7)
 glm.spid <- manyglm(spiddat~Treatment, family="negative.binomial",data=X)
-effect.mat <- effect.alt(glm.spid,effect.size=1.5,pred="Treatment",increasers,decreasers)
+effect.mat <- effect.alt(glm.spid,effect.size=1.5,
+       pred="Treatment",increasers,decreasers)
 extend.fit <- extend.manyglm(glm.spid,N=20,
-                             coeffs=effect.mat) #not needed to be executed for power estimate
+       coeffs=effect.mat) #not needed to be executed for power estimate
 powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat)
 
 #change effect size parameterisation
@@ -106,7 +108,7 @@ powersim.manyglm(glm.spid,N=20,pred="Treatment",
 X_new <- X
 X_new$Treatment[6:7] <- c("B","B")
 extend.fit <- extend.manyglm(glm.spid,N=20,
-                             coeffs=effect.mat,use.design = FALSE,newdata=X_new) #not needed to be executed for power estimate
+     coeffs=effect.mat,use.design = FALSE,newdata=X_new)
 powersim.manyglm(glm.spid,N=20,pred="Treatment",
-coeffs=effect.mat,use.design = FALSE,newdata=X_new)
+     coeffs=effect.mat,use.design = FALSE,newdata=X_new)
 }

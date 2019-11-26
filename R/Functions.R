@@ -1,13 +1,3 @@
-#MVN extend function
-rm(list = ls())
-
-
-#fit the model
-library(mvabund)
-library(MASS)
-library(psych)
-library(matrixcalc)
-library(parallel)
 
 
 MVApowerstat.null <- function(stats.null){
