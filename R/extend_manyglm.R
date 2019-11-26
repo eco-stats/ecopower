@@ -47,6 +47,9 @@
 #'@param newdata Data frame of same size as the original data frame from the inputed `manyglm` fit, that specifies
 #'a different design of interest.
 #'@import mvabund
+#'@import psych
+#'@import matrixcalc
+#'@import MASS
 #'@export
 #'@examples
 #'library(mvabund)
@@ -86,6 +89,7 @@
 #' extend.fit <- extend.manyglm(glm.spid,N=20,
 #'                              coeffs=effect.mat,use.design = FALSE,newdata=X_new) #not needed to be executed for power estimate
 #' powersim.manyglm(glm.spid,N=20,pred="Treatment",coeffs=effect.mat,use.design = FALSE,newdata=X_new)
+
 extend.manyglm <- function(fit,N, coeffs = coef(fit),use.design=TRUE,newdata){
   #extract the dun-smyth residuals
   Z_ds <- residuals(fit)
