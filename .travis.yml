@@ -11,4 +11,3 @@ addons:
     - libcurl4-openssl-dev
     - libxml2-dev
     - libgsl0-dev
-  
