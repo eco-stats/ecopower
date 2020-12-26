@@ -15,7 +15,7 @@ effect_null = function(object, term) {
 #' @describeIn equivtest Multivariate equivalence testing
 #' @export equivtest
 equivtest = function(object, coeffs, term=NULL, object0=NULL, 
-  stats=NULL, test="LR", nsim=999, show.time=TRUE) {
+  stats=NULL, test="LR", nsim=999, ncores=detectCores()-1, show.time=TRUE) {
   
   UseMethod("equivtest")
 }
@@ -32,7 +32,21 @@ extend = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj), newd
 #' @export powersim
 powersim = function(object, coeffs, term, N=nrow(object$obj$data),
   coeff_null=effect_null(object$obj, term), nsim=999, test="score",
-  alpha=0.05, newdata=NULL, n_replicate=NULL, ncores=detectCores()-1) {
+  alpha=0.05, newdata=NULL, n_replicate=NULL,
+  ncores=detectCores()-1, show.time=TRUE) {
   
   UseMethod("powersim")
+}
+
+#' @export
+print.powersim.cord = function(x, ...) {
+  default.print.powersim.cord(x, ...)
+  return (invisible())
+}
+
+default.print.powersim.cord = function(x, ...) {
+  power = x$power
+  cat("Power:", power)
+  cat("\n")
+  invisible (powersim)
 }

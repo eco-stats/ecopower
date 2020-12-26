@@ -13,6 +13,7 @@
   stats = NULL,
   test = "LR",
   nsim = 999,
+  ncores = detectCores() - 1,
   show.time = TRUE
 )
 
@@ -24,6 +25,7 @@ equivtest(
   stats = NULL,
   test = "LR",
   nsim = 999,
+  ncores = detectCores() - 1,
   show.time = TRUE
 )
 }
@@ -43,6 +45,9 @@ simulate test statistics and use the \code{stats} specified.}
 \item{test}{Test statistic for computing p-value. Defaults to \code{"LR"}, however \code{"score"} is also allowed.}
 
 \item{nsim}{Number of simulations for p-value estimate to be based upon. Defaults to \code{999}.}
+
+\item{ncores}{Number of cores for parallel computing. Defaults to the total number of cores available on the
+machine minus 1.}
 
 \item{show.time}{Logical. Displays time elapsed. Defaults to \code{TRUE}.}
 }
@@ -75,7 +80,8 @@ automatically set the predictor of interest as the last term in the fitted \code
 to obtain the intercept model.
 
 Simulations are computed in parallel using the "socket" approach, which uses all available cores minus 1 for clustering
-to improve computation efficiency.
+to improve computation efficiency. Using 1 less than the number of available cores for your
+machine (\code{detectCores()-1}) is recommended to leave one core available for other computer processes.
 }
 \section{Functions}{
 \itemize{

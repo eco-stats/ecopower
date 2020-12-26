@@ -23,7 +23,8 @@
 #' to obtain the intercept model.
 #'
 #' Simulations are computed in parallel using the "socket" approach, which uses all available cores minus 1 for clustering
-#' to improve computation efficiency.
+#' to improve computation efficiency. Using 1 less than the number of available cores for your
+#' machine (\code{detectCores()-1}) is recommended to leave one core available for other computer processes.
 #' @param object objects of class \code{cord}, typically the result of a call to \code{\link[ecoCopula]{cord}}.
 #' @param coeffs Coefficient matrix for a \code{\link[mvabund]{manyglm}} object that characterises the size of effects to be simulated.
 #' See \code{\link{effect_alt}} for help in producing this matrix.
@@ -33,6 +34,8 @@
 #' simulate test statistics and use the \code{stats} specified. 
 #' @param test Test statistic for computing p-value. Defaults to \code{"LR"}, however \code{"score"} is also allowed.
 #' @param nsim Number of simulations for p-value estimate to be based upon. Defaults to \code{999}.
+#' @param ncores Number of cores for parallel computing. Defaults to the total number of cores available on the
+#' machine minus 1.
 #' @param show.time Logical. Displays time elapsed. Defaults to \code{TRUE}.
 #' @return Equivalence test results, and;
 #' \item{\code{p}}{p-value;}
@@ -86,14 +89,14 @@
 #' @export
 
 equivtest.cord = function(object, coeffs, term=NULL, object0=NULL, 
-  stats=NULL, test="LR", nsim=999, show.time=TRUE) {
+  stats=NULL, test="LR", nsim=999, ncores=detectCores()-1, show.time=TRUE) {
   
   ptm = proc.time()
 
   check_equivtest_args(coeffs, object0)
   term = get_term(object$obj, term, object0$obj)
   object0 = get_object0(object$obj, term, object0$obj)
-  stats = get_stats(object, coeffs, term, object0, stats, test, nsim)
+  stats = get_stats(object, coeffs, term, object0, stats, test, nsim, ncores)
   object = object$obj
   anova_obj = anova(object0, object, test=test, nBoot=1, show.time="none")
   stat_obs = anova_obj$table[2,ncol(anova_obj$table)-1]
@@ -173,7 +176,7 @@ get_object0 = function(object, term, object0) {
   return (object0)
 }
 
-get_stats = function(object, coeffs, term, object0, stats, test, nsim) {
+get_stats = function(object, coeffs, term, object0, stats, test, nsim, ncores) {
   if (is.null(stats)) {
     stats = rep(NA,nsim)
     N = nrow(object$obj$data)
@@ -182,7 +185,7 @@ get_stats = function(object, coeffs, term, object0, stats, test, nsim) {
     n_replicate = NULL
     do.fit = TRUE
 
-    ncores = get_ncores()
+    ncores = get_ncores(ncores)
     cl = makeCluster(ncores)
     clusterExport(cl, objects(envir = .GlobalEnv), envir = .GlobalEnv)
     clusterExport(cl, objects(envir = environment()), envir = environment())
@@ -210,13 +213,4 @@ get_pval = function(stat_obs, stats, nsim) {
   p = stats < stat_obs + 1e-8
   p = (sum(p)+1) / (nsim + 1)
   return (p)
-}
-
-get_ncores = function() {
-  if ("_R_CHECK_LIMIT_CORES_" %in% names(s <- Sys.getenv())) {
-    ncores = 2
-  } else {
-    ncores = detectCores()-1
-  }
-  return (ncores)
 }

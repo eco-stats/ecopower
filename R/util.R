@@ -1,5 +1,3 @@
-#' @importFrom stats formula
-
 check_args = function (coeffs) {
   if (is.null(coeffs)) {
     stop("coeffs is null, specify coeffs")
@@ -14,6 +12,15 @@ check_equivtest_args = function (coeffs, object0) {
   }
 }
 
+get_ncores = function(ncores) {
+  if ("_R_CHECK_LIMIT_CORES_" %in% names(s <- Sys.getenv())) {
+    ncores = 2
+  } else {
+    ncores = ncores
+  }
+  return (ncores)
+}
+
 print_time = function (elapsed, show.time) {
   if (show.time == TRUE) {
     hour = elapsed%/%3600
@@ -23,6 +30,7 @@ print_time = function (elapsed, show.time) {
   }
 }
 
+#' @importFrom stats formula
 get_topnote = function(object, ..., resamp) {
   objects <- list(object, ...)
   dots <- list(...)

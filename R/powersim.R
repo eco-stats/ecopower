@@ -36,7 +36,9 @@
 #' @param n_replicate Number of unique replicates of the original data frame. Defaults to \code{NULL}, overwrites \code{N} if specified.
 #' @param ncores Number of cores for parallel computing. Defaults to the total number of cores available on the
 #' machine minus 1.
-#' @return Power estimate
+#' @param show.time Logical. Displays time elapsed. Defaults to \code{TRUE}.
+#' @return Power estimate, and;
+#' \item{\code{power}}{power.}
 #' @seealso \code{\link{effect_alt}}, \code{\link{effect_null}}, \code{\link{extend}}
 #' @import ecoCopula
 #' @import mvabund
@@ -63,7 +65,7 @@
 #' effect_mat = effect_alt(fit.glm, effect_size=1.5,
 #'        increasers, decreasers, term="bare.sand")
 #' fit.cord = cord(fit.glm)
-#' powersim(fit.cord, coeffs=effect_mat, term="bare.sand", nsim=99, ncores=2)
+#' powersim(fit.cord, coeffs=effect_mat, term="bare.sand", nsim=99)
 #'
 #' # Find power for categorical predictor with 4 levels at effect_size=1.5
 #' X$Treatment = rep(c("A","B","C","D"),each=7)
@@ -71,25 +73,28 @@
 #' effect_mat = effect_alt(fit_factors.glm, effect_size=1.5,
 #'        increasers, decreasers, term="Treatment")
 #' fit_factors.cord = cord(fit_factors.glm)
-#' powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99, ncores=2)
+#' powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99)
 #'
 #' # Change effect size parameterisation
 #' effect_mat = effect_alt(fit_factors.glm, effect_size=1.5,
 #'                          increasers, decreasers, term="Treatment",
 #'                          K=c(3,1,2))
-#' powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99, ncores=2)
+#' powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99)
 #' }
 #' @export
 
 powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
    coeff_null=effect_null(object$obj, term), nsim=999, test="score",
-   alpha=0.05, newdata=NULL, n_replicate=NULL, ncores=detectCores()-1) {
+   alpha=0.05, newdata=NULL, n_replicate=NULL,
+   ncores=detectCores()-1, show.time=TRUE) {
 
   check_args(coeffs)
   stats.null = stats = rep(NA,nsim)
   do.fit = TRUE
-  time_start = Sys.time()
 
+  ptm = proc.time()
+
+  ncores = get_ncores(ncores)
   cl = makeCluster(ncores)
   clusterExport(cl, objects(envir = .GlobalEnv), envir = .GlobalEnv)
   clusterExport(cl, objects(envir = environment()), envir = environment())
@@ -114,17 +119,21 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
   stats = unlist(parSapply(cl, stats, MVApowerstat, coeffs=coeffs))
   
   stopCluster(cl)
-  time_elapsed = Sys.time() - time_start
   
   #print(c(mean(stats[!is.na(stats)]>criticalStat),mean(stats[!is.na(stats)]>criticalStat_lower),mean(stats[!is.na(stats)]>criticalStat_upper),new))
-  p = get_pval(criticalStat, stats, nsim)
-  p = c(p, time_elapsed)
-  names(p) = c("Power", "Comp time")
-  print(p)
+  power = get_power(criticalStat, stats, nsim)
+
+  out = list(power = power)
+
+  elapsed = proc.time()[3] - ptm[3]
+  print_time(elapsed, show.time)
+
   #print(binom.confint(table((stats[!is.na(stats)]>criticalStat))[2],n=nsim,method="wilson")[c(5,6)])
+  class(out) = "powersim.cord" 
+  return (out)
 }
 
-get_pval = function(criticalStat, stats, nsim) {
+get_power = function(criticalStat, stats, nsim) {
   p = rep(NA, length=nsim)
   p = stats + 1e-8 > criticalStat
   p = (sum(p)+1) / (nsim + 1)

@@ -11,27 +11,22 @@ utils::globalVariables(c(
 ))
 
 MVApowerstat = function(stats, coeffs) {
-  stats.null = suppressMessages(
-    suppressWarnings(
-      anova(
-        suppressMessages(
-          suppressWarnings(
-            extend(
-              object=object,
-              N=N,
-              coeffs=coeffs,
-              newdata=newdata,
-              n_replicate=n_replicate,
-              do.fit=do.fit
-            )
-          )
-        ), 
-        nBoot=1, 
-        test=test,
-        show.time = "none"
-      )
-    )
+  stats = 
+    anova(
+      extend(
+        object=object,
+        N=N,
+        coeffs=coeffs,
+        newdata=newdata,
+        n_replicate=n_replicate,
+        do.fit=do.fit
+      ), 
+    nBoot=1, 
+    test=test,
+    show.time = "none"
   )$table[term,3]
+
+  return (stats)
 }
 
 MVApowerstatObj = function(stats) {
@@ -48,4 +43,6 @@ MVApowerstatObj = function(stats) {
   stats = anova(
     object0_sim, object_sim, nBoot=1, test=test, show.time="none"
   )$table[2,3]
+
+  return (stats)
 }
