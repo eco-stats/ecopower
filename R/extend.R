@@ -12,14 +12,14 @@
 #' \code{coeffs}, see \code{\link{effect_alt}} which simplifies this process.
 #'
 #' Response variables are simulated through a copula model by first extracting Gaussian copular scores
-#' as Dunn-Smyth residuals, which are obtained from abundances \eqn{y_{ij}} with marginal distributions \eqn{F_j}
-#' which have been specified via the original \code{manyglm} model \code{fit.manyglm};
+#' as Dunn-Smyth residuals (Dunn & Smyth 1996), which are obtained from abundances \eqn{y_{ij}} with marginal distributions
+#' \eqn{F_j} which have been specified via the original \code{manyglm} model (\code{fit.glm}; see examples);
 #'
 #' \deqn{z_{ij} = \Phi^{-1}{F_{j}(y_{ij}^-) + u_{ij} F_{j}(y_{ij})}}
 #'
 #'  These scores then follow a multivariate Gaussian distribution with zero mean and covariance structure \eqn{\Sigma},
 #'
-#'  \deqn{z_{ij} ~ N_p(0,\Sigma)}
+#'  \deqn{z_{ij} \sim N_p(0,\Sigma)}
 #'
 #' To avoid estimating a large number \eqn{p(p-1)/2} pairwise correlations within \eqn{\Sigma}, factor analysis is utilised
 #' with two latent factor variables, which can be interpreted as an unobserved environmental covariate.
@@ -37,14 +37,14 @@
 #'
 #' If users are interested in obtaining a \code{manyglm} model, \code{do.fit=TRUE} can be used to obtain a \code{\link[mvabund]{manyglm}}
 #' object from the simulated responses.
-#'
+#' @references Dunn, P.K., & Smyth, G.K. (1996). Randomized quantile residuals. Journal of Computational and Graphical Statistics 5, 236-244.
 #' @param object objects of class \code{cord}, typically the result of a call to \code{\link[ecoCopula]{cord}}.
 #' @param N Number of samples to be extended. Defaults to the number of observations in the original sample.
 #' @param coeffs Coefficient matrix for a \code{\link[mvabund]{manyglm}} object that characterises the size of effects to be simulated.
-#' See \code{\link{effect_alt}} for help in producing this matrix. Defaults to the coefficient matrix from the inputed \code{\link[mvabund]{manyglm}}
+#' See \code{\link{effect_alt}} for help in producing this matrix. Defaults to the coefficient matrix from the inputed \code{\link[ecoCopula]{cord}}
 #' object \code{coef(object$obj)}.
-#' @param newdata Data frame of same size as the original data frame from the inputed \code{manyglm} fit, that specifies
-#' a different design of interest.
+#' @param newdata Data frame of same size as the original X covariates from the fitted \code{object}, that specifies
+#' a different design of interest. Defaults to the X covariates from \code{object$obj$data}.
 #' @param n_replicate Number of unique replicates of the original data frame. Defaults to \code{NULL}, overwrites \code{N} if specified.
 #' @param do.fit Logical. If \code{TRUE}, fits a \code{\link[mvabund]{manyglm}} object from the simulated data. Defaults to \code{FALSE}.
 #' @param seed Random number seed, defaults to a random seed number.
@@ -95,12 +95,13 @@
 #'    coeffs=effect_mat, newdata=X_new, n_replicate=5)
 #' @export
 
-extend.cord = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj), newdata=NULL, 
-  n_replicate=NULL, do.fit=FALSE, seed=NULL) {
+extend.cord = function(object, N=nrow(newdata), coeffs=coef(object$obj),
+  newdata=object$obj$data, n_replicate=NULL, do.fit=FALSE, seed=NULL) {
 
   #find the number of observations
   Nobs = nrow(object$obj$fitted.values)
-  N = compute_N(object, N, n_replicate)
+  check_newdata(newdata, Nobs)
+  N = compute_N(newdata, N, n_replicate)
   #choose the number of data sets to simulate
   nDatasets = compute_nDatasets(N, Nobs)
 
@@ -114,7 +115,7 @@ extend.cord = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj),
   if (do.fit == TRUE) {
     out = get_new_fit(object, Ynew, extended_data, Xnew)
   } else {
-    extended_data = drop_ones(extended_data, Xnew)
+    extended_data = drop_intercept(extended_data, Xnew)
     out = list(data = extended_data)
   }
   return (out)
@@ -123,23 +124,15 @@ extend.cord = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj),
 get_Xnew = function(object, n_replicate, newdata, Nobs, nDatasets, N) {
   if (formula(object$obj)[-2] == ~1) {
     Xnew = data.frame(array(1, N))
-    names(Xnew) = "ones.intercept"
+    colnames(Xnew) = "ones.intercept"
   } else {
     if (!is.null(n_replicate)) {
-      if (is.null(newdata)) {
-        Xnew = rep_unique_Xnew(object$obj$data, n_replicate)
-      } else {
-        Xnew = rep_unique_Xnew(newdata, n_replicate)
-      }
+      Xnew = rep_unique_Xnew(newdata, n_replicate)
     } else {
       #extend the design matrix appropriately
 
       # Repeat the data set nDataset times
-      if (is.null(newdata)) {
-        Xnew = rep_Xnew(object$obj$data, Nobs, nDatasets)
-      } else {
-        Xnew = rep_Xnew(newdata, Nobs, nDatasets)
-      }
+      Xnew = rep_Xnew(newdata, Nobs, nDatasets)
     }
   }
 
@@ -147,26 +140,26 @@ get_Xnew = function(object, n_replicate, newdata, Nobs, nDatasets, N) {
   return (Xnew)
 }
 
-rep_unique_Xnew = function(frame, n_replicate) {
-  if (ncol(frame) > 1) {
-    Xnew = do.call("rbind", replicate(n_replicate, unique(frame), simplify = FALSE))
+rep_unique_Xnew = function(newdata, n_replicate) {
+  if (ncol(newdata) > 1) {
+    Xnew = do.call("rbind", replicate(n_replicate, unique(newdata), simplify = FALSE))
   } else {
-    name = colnames(frame)
-    colnames(frame) = "V1"
-    Xnew = data.frame(rep(unique(frame), each=n_replicate))
+    name = colnames(newdata)
+    colnames(newdata) = "V1"
+    Xnew = data.frame(rep(unique(newdata), each=n_replicate))
 
     Xnew = vectorize_Xnew(Xnew, name)
   }
   return (Xnew)
 }
 
-rep_Xnew = function(frame, Nobs, nDatasets) {
-  if (ncol(frame) > 1) {
-    Xnew = frame[rep( 1:Nobs , nDatasets ),]
+rep_Xnew = function(newdata, Nobs, nDatasets) {
+  if (ncol(newdata) > 1) {
+    Xnew = newdata[rep( 1:Nobs , nDatasets ),]
   } else {
-    name = colnames(frame)
-    colnames(frame) = "V1"
-    Xnew = data.frame(frame[rep( 1:Nobs , nDatasets ),])
+    name = colnames(newdata)
+    colnames(newdata) = "V1"
+    Xnew = data.frame(newdata[rep( 1:Nobs , nDatasets ),])
 
     Xnew = vectorize_Xnew(Xnew, name)
   }
@@ -183,20 +176,24 @@ vectorize_Xnew = function(Xnew, name) {
 
 get_new_fit = function(object, Ynew, extended_data, Xnew) {
   Ynew <- as.matrix(Ynew)
-  # data = extended_data
   object$obj$call[[2]][[2]] <- quote(Ynew)
 
-  if (!"ones.intercept" %in% names(Xnew)) {
+  if (!"ones.intercept" %in% colnames(Xnew)) {
     object$obj$call[[4]] <- quote(extended_data)
   }
 
   new_fit = eval(object$obj$call)
+
+  if (ncol(new_fit$data) == 1 && "Ynew" %in% colnames(new_fit$data)) {
+    new_fit$data = data.frame(new_fit$y)
+  }
+
   return (new_fit)
 }
 
-compute_N = function(object, N, n_replicate) {
+compute_N = function(newdata, N, n_replicate) {
   if (!is.null(n_replicate)) {
-    N_cal = nrow(unique(object$obj$data)) * n_replicate
+    N_cal = nrow(unique(newdata)) * n_replicate
     if (!is.null(N) && N_cal!=N) {
       warning("N has been overwritten by n_replicate.")        
     }
@@ -216,19 +213,21 @@ compute_nDatasets = function(N, Nobs) {
   return (nDatasets)
 }
 
-remove_excess_rows = function(N, Nobs, frame) {
-  if (N%%Nobs > 0 && N!=nrow(frame)) {
+remove_excess_rows = function(N, Nobs, Xnew) {
+  name = colnames(Xnew)
+  if (N%%Nobs > 0 && N!=nrow(Xnew)) {
     whichRemove = sample(Nobs,(Nobs- N%%Nobs)) + Nobs*N%/%Nobs
-    frame   = frame[-whichRemove,]
+    Xnew   = data.frame(Xnew[-whichRemove,])
   } else {
-    frame   = frame
+    Xnew   = data.frame(Xnew)
   }
-  return (frame)
+  colnames(Xnew) = name
+  return (Xnew)
 }
 
-drop_ones = function(extended_data, Xnew) {
-  if ("ones.intercept" %in% names(Xnew)) {
-    extended_data = extended_data[, !(names(extended_data) %in% "ones.intercept")]
+drop_intercept = function(extended_data, Xnew) {
+  if ("ones.intercept" %in% colnames(Xnew)) {
+    extended_data = extended_data[, !(colnames(extended_data) %in% "ones.intercept")]
   } else {
     extended_data = extended_data
   }

@@ -1,14 +1,20 @@
-check_args = function (coeffs) {
+check_coeffs = function (coeffs) {
   if (is.null(coeffs)) {
     stop("coeffs is null, specify coeffs")
   }
 }
 
 check_equivtest_args = function (coeffs, object0) {
-  check_args(coeffs)
+  check_coeffs(coeffs)
   
   if (!is.null(object0) && class(object0) != "cord") {
     stop("object0 is not of class cord")
+  }
+}
+
+check_newdata = function(newdata, Nobs) {
+  if (nrow(newdata) != Nobs) {
+    stop("newdata is not the same size as the fitted X covariates")
   }
 }
 
