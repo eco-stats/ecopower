@@ -1,4 +1,4 @@
-context("check input args")
+context("effect_null - class of object")
 
 test_that("manyglm object", {
 
@@ -8,7 +8,7 @@ test_that("manyglm object", {
 
 })
 
-context("output matrix")
+context("effect_null matrix")
 
 test_that("term_cont", {
 

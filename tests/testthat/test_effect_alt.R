@@ -1,6 +1,6 @@
 source("fixtures.R")
 
-context("check input args")
+context("effect_alt - class of object")
 
 test_that("manyglm object", {
 
@@ -10,7 +10,7 @@ test_that("manyglm object", {
 
 })
 
-context("output matrix")
+context("effect_alt matrix")
 
 test_that("term_cont", {
 

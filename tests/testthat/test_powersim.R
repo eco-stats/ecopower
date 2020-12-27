@@ -1,4 +1,4 @@
-context("check input args")
+context("powersim - class of object")
 
 test_that("cord object", {
 
@@ -7,6 +7,8 @@ test_that("cord object", {
   )
 
 })
+
+context("powersim - check input args")
 
 test_that("coeffs exist", {
 
