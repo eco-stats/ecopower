@@ -23,7 +23,7 @@ to specify a null effect.
 }
 \details{
 \code{effect_null} produces a coefficient matrix with a null effect that is specified by setting the parameter
-estimates of a predictor of interest `term` to 0. This function is used by default in \code{\link{powersim}}.
+estimates of a predictor of interest \code{term} to 0. This function is used by default in \code{\link{powersim}}.
 Note that intercept values are parameterised as in \code{\link{effect_alt}}.
 }
 \section{Functions}{

@@ -7,9 +7,9 @@
 \usage{
 \method{extend}{cord}(
   object,
-  N = nrow(object$obj$data),
+  N = nrow(newdata),
   coeffs = coef(object$obj),
-  newdata = NULL,
+  newdata = object$obj$data,
   n_replicate = NULL,
   do.fit = FALSE,
   seed = NULL
@@ -17,9 +17,9 @@
 
 extend(
   object,
-  N = nrow(object$obj$data),
+  N = nrow(newdata),
   coeffs = coef(object$obj),
-  newdata = NULL,
+  newdata = object$obj$data,
   n_replicate = NULL,
   do.fit = FALSE,
   seed = NULL
@@ -31,11 +31,11 @@ extend(
 \item{N}{Number of samples to be extended. Defaults to the number of observations in the original sample.}
 
 \item{coeffs}{Coefficient matrix for a \code{\link[mvabund]{manyglm}} object that characterises the size of effects to be simulated.
-See \code{\link{effect_alt}} for help in producing this matrix. Defaults to the coefficient matrix from the inputed \code{\link[mvabund]{manyglm}}
+See \code{\link{effect_alt}} for help in producing this matrix. Defaults to the coefficient matrix from the inputed \code{\link[ecoCopula]{cord}}
 object \code{coef(object$obj)}.}
 
-\item{newdata}{Data frame of same size as the original data frame from the inputed \code{manyglm} fit, that specifies
-a different design of interest.}
+\item{newdata}{Data frame of same size as the original X covariates from the fitted \code{object}, that specifies
+a different design of interest. Defaults to the X covariates from \code{object$obj$data}.}
 
 \item{n_replicate}{Number of unique replicates of the original data frame. Defaults to \code{NULL}, overwrites \code{N} if specified.}
 
@@ -58,14 +58,14 @@ correlation structure exhibited between the response variables. To help with the
 \code{coeffs}, see \code{\link{effect_alt}} which simplifies this process.
 
 Response variables are simulated through a copula model by first extracting Gaussian copular scores
-as Dunn-Smyth residuals, which are obtained from abundances \eqn{y_{ij}} with marginal distributions \eqn{F_j}
-which have been specified via the original \code{manyglm} model \code{fit.manyglm};
+as Dunn-Smyth residuals (Dunn & Smyth 1996), which are obtained from abundances \eqn{y_{ij}} with marginal distributions
+\eqn{F_j} which have been specified via the original \code{manyglm} model (\code{fit.glm}; see examples);
 
 \deqn{z_{ij} = \Phi^{-1}{F_{j}(y_{ij}^-) + u_{ij} F_{j}(y_{ij})}}
 
  These scores then follow a multivariate Gaussian distribution with zero mean and covariance structure \eqn{\Sigma},
 
- \deqn{z_{ij} ~ N_p(0,\Sigma)}
+ \deqn{z_{ij} \sim N_p(0,\Sigma)}
 
 To avoid estimating a large number \eqn{p(p-1)/2} pairwise correlations within \eqn{\Sigma}, factor analysis is utilised
 with two latent factor variables, which can be interpreted as an unobserved environmental covariate.
@@ -124,6 +124,9 @@ X_new = X
 X_new$Treatment[6:7] = c("B","B")
 simData = extend(fit_factors.cord, N=NULL,
    coeffs=effect_mat, newdata=X_new, n_replicate=5)
+}
+\references{
+Dunn, P.K., & Smyth, G.K. (1996). Randomized quantile residuals. Journal of Computational and Graphical Statistics 5, 236-244.
 }
 \seealso{
 \code{\link{effect_alt}}

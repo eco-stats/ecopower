@@ -37,7 +37,7 @@
 #' @param ncores Number of cores for parallel computing. Defaults to the total number of cores available on the
 #' machine minus 1.
 #' @param show.time Logical. Displays time elapsed. Defaults to \code{TRUE}.
-#' @return Power estimate, and;
+#' @return Power estimate result, and;
 #' \item{\code{power}}{power.}
 #' @seealso \code{\link{effect_alt}}, \code{\link{effect_null}}, \code{\link{extend}}
 #' @import ecoCopula
@@ -88,7 +88,7 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
    alpha=0.05, newdata=NULL, n_replicate=NULL,
    ncores=detectCores()-1, show.time=TRUE) {
 
-  check_args(coeffs)
+  check_coeffs(coeffs)
   stats.null = stats = rep(NA,nsim)
   do.fit = TRUE
 

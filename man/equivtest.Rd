@@ -42,7 +42,7 @@ See \code{\link{effect_alt}} for help in producing this matrix.}
 \item{stats}{Statistics simulated under the null hypothesis. Optional, defaults to \code{NULL}. If not \code{NULL}, \code{equivtest} will not
 simulate test statistics and use the \code{stats} specified.}
 
-\item{test}{Test statistic for computing p-value. Defaults to \code{"LR"}, however \code{"score"} is also allowed.}
+\item{test}{Test statistic for computing p-value. Defaults to \code{"LR"}.}
 
 \item{nsim}{Number of simulations for p-value estimate to be based upon. Defaults to \code{999}.}
 
@@ -70,7 +70,7 @@ using \code{\link[ecoCopula]{cord}} to estimate the factor analytic covariance s
 factors by default. The p-value is then obtained by parsing the inputed \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
 \code{nsim} times with an effect size specified by \code{coeffs}.
 
-The test statistics are simulated under the null hypothesis that the effect size equals a certain threshold.
+The test statistics are simulated under the hypothesis that the effect size equals a certain threshold.
 The p-value is computed as the proportion of times the simulated test statistics are less than the observed
 statistic. Equivalence is declared if the estimated effect is less than the threshold.
 

@@ -64,7 +64,7 @@ machine minus 1.}
 \item{show.time}{Logical. Displays time elapsed. Defaults to \code{TRUE}.}
 }
 \value{
-Power estimate, and;
+Power estimate result, and;
 \item{\code{power}}{power.}
 }
 \description{

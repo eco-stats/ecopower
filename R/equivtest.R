@@ -13,7 +13,7 @@
 #' factors by default. The p-value is then obtained by parsing the inputed \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
 #' \code{nsim} times with an effect size specified by \code{coeffs}.
 #'
-#' The test statistics are simulated under the null hypothesis that the effect size equals a certain threshold.
+#' The test statistics are simulated under the hypothesis that the effect size equals a certain threshold.
 #' The p-value is computed as the proportion of times the simulated test statistics are less than the observed
 #' statistic. Equivalence is declared if the estimated effect is less than the threshold.
 #'
@@ -32,7 +32,7 @@
 #' @param object0 object of class \code{cord} that specifies the null hypothesis. Defaults to \code{NULL}, see details.
 #' @param stats Statistics simulated under the null hypothesis. Optional, defaults to \code{NULL}. If not \code{NULL}, \code{equivtest} will not
 #' simulate test statistics and use the \code{stats} specified. 
-#' @param test Test statistic for computing p-value. Defaults to \code{"LR"}, however \code{"score"} is also allowed.
+#' @param test Test statistic for computing p-value. Defaults to \code{"LR"}.
 #' @param nsim Number of simulations for p-value estimate to be based upon. Defaults to \code{999}.
 #' @param ncores Number of cores for parallel computing. Defaults to the total number of cores available on the
 #' machine minus 1.

@@ -6,7 +6,7 @@
 #'
 #' @details
 #' \code{effect_null} produces a coefficient matrix with a null effect that is specified by setting the parameter
-#' estimates of a predictor of interest `term` to 0. This function is used by default in \code{\link{powersim}}.
+#' estimates of a predictor of interest \code{term} to 0. This function is used by default in \code{\link{powersim}}.
 #' Note that intercept values are parameterised as in \code{\link{effect_alt}}.
 #' @param object objects of class \code{manyglm}, typically the result of a call to \code{\link[mvabund]{manyglm}}.
 #' @param term Name of predictor of interest in quotes.
