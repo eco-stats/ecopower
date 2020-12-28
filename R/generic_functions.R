@@ -22,8 +22,8 @@ equivtest = function(object, coeffs, term=NULL, object0=NULL,
 
 #' @describeIn extend Simulate or extend multivariate abundance data
 #' @export extend
-extend = function(object, N=nrow(newdata), coeffs=coef(object$obj),
-  newdata=object$obj$data, n_replicate=NULL, do.fit=FALSE, seed=NULL) {
+extend = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj),
+  newdata=NULL, n_replicate=NULL, do.fit=FALSE, seed=NULL) {
 
   UseMethod("extend")
 }

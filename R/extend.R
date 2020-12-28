@@ -44,7 +44,7 @@
 #' See \code{\link{effect_alt}} for help in producing this matrix. Defaults to the coefficient matrix from the inputed \code{\link[ecoCopula]{cord}}
 #' object \code{coef(object$obj)}.
 #' @param newdata Data frame of same size as the original X covariates from the fitted \code{object}, that specifies
-#' a different design of interest. Defaults to the X covariates from \code{object$obj$data}.
+#' a different design of interest. Defaults to \code{NULL}.
 #' @param n_replicate Number of unique replicates of the original data frame. Defaults to \code{NULL}, overwrites \code{N} if specified.
 #' @param do.fit Logical. If \code{TRUE}, fits a \code{\link[mvabund]{manyglm}} object from the simulated data. Defaults to \code{FALSE}.
 #' @param seed Random number seed, defaults to a random seed number.
@@ -95,17 +95,17 @@
 #'    coeffs=effect_mat, newdata=X_new, n_replicate=5)
 #' @export
 
-extend.cord = function(object, N=nrow(newdata), coeffs=coef(object$obj),
-  newdata=object$obj$data, n_replicate=NULL, do.fit=FALSE, seed=NULL) {
+extend.cord = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj),
+  newdata=NULL, n_replicate=NULL, do.fit=FALSE, seed=NULL) {
 
   #find the number of observations
   Nobs = nrow(object$obj$fitted.values)
-  check_newdata(newdata, Nobs)
-  N = compute_N(newdata, N, n_replicate)
+  frame = get_data(object, newdata)
+  N = compute_N(frame, N, n_replicate)
   #choose the number of data sets to simulate
   nDatasets = compute_nDatasets(N, Nobs)
 
-  Xnew = get_Xnew(object, n_replicate, newdata, Nobs, nDatasets, N)
+  Xnew = get_Xnew(object, n_replicate, frame, Nobs, nDatasets, N)
   Xnew = remove_excess_rows(N, Nobs, Xnew)
 
   object$obj$coefficients = coeffs
@@ -121,18 +121,18 @@ extend.cord = function(object, N=nrow(newdata), coeffs=coef(object$obj),
   return (out)
 }
 
-get_Xnew = function(object, n_replicate, newdata, Nobs, nDatasets, N) {
+get_Xnew = function(object, n_replicate, frame, Nobs, nDatasets, N) {
   if (formula(object$obj)[-2] == ~1) {
     Xnew = data.frame(array(1, N))
     colnames(Xnew) = "ones.intercept"
   } else {
     if (!is.null(n_replicate)) {
-      Xnew = rep_unique_Xnew(newdata, n_replicate)
+      Xnew = rep_unique_Xnew(frame, n_replicate)
     } else {
       #extend the design matrix appropriately
 
       # Repeat the data set nDataset times
-      Xnew = rep_Xnew(newdata, Nobs, nDatasets)
+      Xnew = rep_Xnew(frame, Nobs, nDatasets)
     }
   }
 
@@ -140,26 +140,26 @@ get_Xnew = function(object, n_replicate, newdata, Nobs, nDatasets, N) {
   return (Xnew)
 }
 
-rep_unique_Xnew = function(newdata, n_replicate) {
-  if (ncol(newdata) > 1) {
-    Xnew = do.call("rbind", replicate(n_replicate, unique(newdata), simplify = FALSE))
+rep_unique_Xnew = function(frame, n_replicate) {
+  if (ncol(frame) > 1) {
+    Xnew = do.call("rbind", replicate(n_replicate, unique(frame), simplify = FALSE))
   } else {
-    name = colnames(newdata)
-    colnames(newdata) = "V1"
-    Xnew = data.frame(rep(unique(newdata), each=n_replicate))
+    name = colnames(frame)
+    colnames(frame) = "V1"
+    Xnew = data.frame(rep(unique(frame), each=n_replicate))
 
     Xnew = vectorize_Xnew(Xnew, name)
   }
   return (Xnew)
 }
 
-rep_Xnew = function(newdata, Nobs, nDatasets) {
-  if (ncol(newdata) > 1) {
-    Xnew = newdata[rep( 1:Nobs , nDatasets ),]
+rep_Xnew = function(frame, Nobs, nDatasets) {
+  if (ncol(frame) > 1) {
+    Xnew = frame[rep( 1:Nobs , nDatasets ),]
   } else {
-    name = colnames(newdata)
-    colnames(newdata) = "V1"
-    Xnew = data.frame(newdata[rep( 1:Nobs , nDatasets ),])
+    name = colnames(frame)
+    colnames(frame) = "V1"
+    Xnew = data.frame(frame[rep( 1:Nobs , nDatasets ),])
 
     Xnew = vectorize_Xnew(Xnew, name)
   }
@@ -191,9 +191,9 @@ get_new_fit = function(object, Ynew, extended_data, Xnew) {
   return (new_fit)
 }
 
-compute_N = function(newdata, N, n_replicate) {
+compute_N = function(frame, N, n_replicate) {
   if (!is.null(n_replicate)) {
-    N_cal = nrow(unique(newdata)) * n_replicate
+    N_cal = nrow(unique(frame)) * n_replicate
     if (!is.null(N) && N_cal!=N) {
       warning("N has been overwritten by n_replicate.")        
     }
@@ -232,4 +232,13 @@ drop_intercept = function(extended_data, Xnew) {
     extended_data = extended_data
   }
   return (extended_data)
+}
+
+get_data = function(object, newdata) {
+  if (is.null(newdata)) {
+    frame = object$obj$data
+  } else {
+    frame = newdata
+  }
+  return (frame)
 }

@@ -7,9 +7,9 @@
 \usage{
 \method{extend}{cord}(
   object,
-  N = nrow(newdata),
+  N = nrow(object$obj$data),
   coeffs = coef(object$obj),
-  newdata = object$obj$data,
+  newdata = NULL,
   n_replicate = NULL,
   do.fit = FALSE,
   seed = NULL
@@ -17,9 +17,9 @@
 
 extend(
   object,
-  N = nrow(newdata),
+  N = nrow(object$obj$data),
   coeffs = coef(object$obj),
-  newdata = object$obj$data,
+  newdata = NULL,
   n_replicate = NULL,
   do.fit = FALSE,
   seed = NULL
@@ -35,7 +35,7 @@ See \code{\link{effect_alt}} for help in producing this matrix. Defaults to the 
 object \code{coef(object$obj)}.}
 
 \item{newdata}{Data frame of same size as the original X covariates from the fitted \code{object}, that specifies
-a different design of interest. Defaults to the X covariates from \code{object$obj$data}.}
+a different design of interest. Defaults to \code{NULL}.}
 
 \item{n_replicate}{Number of unique replicates of the original data frame. Defaults to \code{NULL}, overwrites \code{N} if specified.}
 
