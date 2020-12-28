@@ -8,16 +8,6 @@ test_that("cord object", {
 
 })
 
-context("extend - check input args")
-
-test_that("newdata is same size as fitted covariates", {
-
-  expect_error(
-    extend(fit1.cord, newdata=Xnew_sub)
-  )
-
-})
-
 context("compute_N")
 
 test_that("n_replicate overwrites N", {

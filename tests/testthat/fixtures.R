@@ -13,8 +13,6 @@ X$month = rep(c("Jan","Feb","Mar","Apr"),each=7)
 Xnew = X
 Xnew$Treatment2[6:7] = c("B","B")
 
-Xnew_sub = Xnew[1:10,]
-
 Xvec = Xvec2 = data.frame(Treatment2 = X$Treatment2)
 Xvec2$Treatment2[6:7] = c("B","B")
 

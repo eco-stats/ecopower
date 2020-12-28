@@ -12,12 +12,6 @@ check_equivtest_args = function (coeffs, object0) {
   }
 }
 
-check_newdata = function(newdata, Nobs) {
-  if (nrow(newdata) != Nobs) {
-    stop("newdata is not the same size as the fitted X covariates")
-  }
-}
-
 get_ncores = function(ncores) {
   if ("_R_CHECK_LIMIT_CORES_" %in% names(s <- Sys.getenv())) {
     ncores = 2
