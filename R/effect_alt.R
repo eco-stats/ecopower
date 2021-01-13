@@ -94,16 +94,15 @@ effect_alt.manyglm = function(object, effect_size, increasers, decreasers, term,
   if (class(object$data[,term]) %in% c("integer", "numeric")) {
     coeff[term,][increasers] = log(effect_size)
     coeff[term,][decreasers] = -log(effect_size)
+  }
 
-  } else if (class(object$data[,term]) %in% c("factor", "character")) {
+  if (class(object$data[,term]) %in% c("factor", "character")) {
     K = get_K(K, nRow)
 
     for (iRow in 1:nRow) {
       coeff[rowNames[iRow],][increasers] = log(effect_size^K[iRow])
       coeff[rowNames[iRow],][decreasers] = -log(effect_size^K[iRow])
     }
-  } else {
-    stop("This function does not recognise this type of predictor")
   }
 
   return(coeff)

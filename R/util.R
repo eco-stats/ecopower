@@ -12,6 +12,20 @@ check_equivtest_args = function (coeffs, object0) {
   }
 }
 
+check_effect_args = function(object, term) {
+  if (!class(object$data[,term]) %in% c("integer", "numeric", "factor", "character")) {
+    stop("This function does not recognise this type of term")
+  }
+
+  if (attr(object$terms, "intercept") == 0) {
+    stop("Model without intercept is not supported")
+  }
+
+  if (length(unlist(strsplit(term, ":"))) > 1) {
+    stop("Interaction term is not supported")
+  }
+}
+
 get_ncores = function(ncores) {
   if ("_R_CHECK_LIMIT_CORES_" %in% names(s <- Sys.getenv())) {
     ncores = 2
