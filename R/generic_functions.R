@@ -31,7 +31,7 @@ extend = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj),
 #' @describeIn powersim Provide power estimates for multivariate abundance models
 #' @export powersim
 powersim = function(object, coeffs, term, N=nrow(object$obj$data),
-  coeff_null=effect_null(object$obj, term), nsim=999, test="score",
+  coeffs0=effect_null(object$obj, term), nsim=999, test="score",
   alpha=0.05, newdata=NULL, n_replicate=NULL,
   ncores=detectCores()-1, show.time=TRUE) {
   

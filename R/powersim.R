@@ -8,7 +8,7 @@
 #' \code{powersim} takes a \code{\link[ecoCopula]{cord}} object, sample size \code{N} and coefficient matrix \code{coeffs} which
 #' specifies an effect size of interest and returns a power estimate.
 #'
-#' The power estimate is obtained by first parsing the inputed \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
+#' The power estimate is obtained by first parsing the \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
 #' \code{nsim} times with an effect size specified by \code{coeffs}. Next, the \code{\link[ecoCopula]{cord}} object is parsed into
 #' \code{\link{extend}} an additional \code{nsim} times with a null effect, which is defined by default by
 #' \code{\link{effect_null}}. This effectively simulates \code{nsim} \code{manyglm} models under both the null
@@ -27,12 +27,12 @@
 #' See \code{\link{effect_alt}} for help in producing this matrix.
 #' @param term Name of predictor of interest in quotes.
 #' @param N Number of samples for power estimate. Defaults to the number of observations in the original sample.
-#' @param coeff_null Coefficient matrix under the null hypothesis. Defaults to being specified by \code{\link{effect_null}}.
+#' @param coeffs0 Coefficient matrix under the null hypothesis. Defaults to being specified by \code{\link{effect_null}}.
 #' @param nsim Number of simulations for power estimate to be based upon. Defaults to \code{999}.
 #' @param test Test statistic for power estimate to based upon. Defaults to \code{"score"}, however \code{"wald"} is also allowed.
 #' @param alpha Type I error rate for power estimate, defaults to \code{0.05}.
-#' @param newdata Data frame of same size as the original data frame from the inputed \code{manyglm} fit, that specifies
-#' a different design of interest.
+#' @param newdata Data frame of the same size as the original data frame from the \code{\link[ecoCopula]{cord}} object
+#' (\code{object$obj$data}), that specifies a different design of interest.
 #' @param n_replicate Number of unique replicates of the original data frame. Defaults to \code{NULL}, overwrites \code{N} if specified.
 #' @param ncores Number of cores for parallel computing. Defaults to the total number of cores available on the
 #' machine minus 1.
@@ -84,7 +84,7 @@
 #' @export
 
 powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
-   coeff_null=effect_null(object$obj, term), nsim=999, test="score",
+   coeffs0=effect_null(object$obj, term), nsim=999, test="score",
    alpha=0.05, newdata=NULL, n_replicate=NULL,
    ncores=detectCores()-1, show.time=TRUE) {
 
@@ -104,7 +104,7 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
   })
 
   # Find critical value under the null
-  stats.null = parSapply(cl, stats.null, MVApowerstat, coeffs=coeff_null)
+  stats.null = parSapply(cl, stats.null, MVApowerstat, coeffs=coeffs0)
   criticalStat = quantile(
     unlist(stats.null[!is.na(unlist(stats.null))]), 1-alpha, na.rm=TRUE
   )

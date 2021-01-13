@@ -31,8 +31,8 @@ extend(
 \item{N}{Number of samples to be extended. Defaults to the number of observations in the original sample.}
 
 \item{coeffs}{Coefficient matrix for a \code{\link[mvabund]{manyglm}} object that characterises the size of effects to be simulated.
-See \code{\link{effect_alt}} for help in producing this matrix. Defaults to the coefficient matrix from the inputed \code{\link[ecoCopula]{cord}}
-object \code{coef(object$obj)}.}
+See \code{\link{effect_alt}} for help in producing this matrix. Defaults to the coefficient matrix from the \code{\link[ecoCopula]{cord}}
+object, \code{coef(object$obj)}.}
 
 \item{newdata}{Data frame of same size as the original X covariates from the fitted \code{object}, that specifies
 a different design of interest. Defaults to \code{NULL}.}
@@ -71,7 +71,7 @@ To avoid estimating a large number \eqn{p(p-1)/2} pairwise correlations within \
 with two latent factor variables, which can be interpreted as an unobserved environmental covariate.
 
 Thus, in order to simulate new multivariate abundances we simulate new copula scores and back transform them to
-abundances as \eqn{y_{ij}= {F^*}_j^{-1}(\Phi(z_{ij}))}, where the inputed coefficient matrix \code{coeffs} specifies the
+abundances as \eqn{y_{ij}= {F^*}_j^{-1}(\Phi(z_{ij}))}, where the coefficient matrix \code{coeffs} specifies the
 effect size within the new marginal distributions \eqn{{F^*}_j}.
 
 The data frame is also extended in a manner that preserves the original design structure. This is done by first

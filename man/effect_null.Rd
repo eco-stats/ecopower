@@ -39,7 +39,7 @@ X = data.frame(spider$x)
 
 # Find null effect size for continuous predictor
 spid.glm = manyglm(spiddat~soil.dry, family="negative.binomial", data=X)
-coeff_null = effect_null(spid.glm, term="soil.dry")
+coeffs0 = effect_null(spid.glm, term="soil.dry")
 }
 \seealso{
 \code{\link{effect_alt}}, \code{\link{powersim}}

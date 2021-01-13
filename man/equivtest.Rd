@@ -67,7 +67,7 @@ interest to perform an equivalence test.
 
 First, marginal parameters of the data are obtained from a \code{\link[mvabund]{manyglm}} object. Next, a copula model is fitted
 using \code{\link[ecoCopula]{cord}} to estimate the factor analytic covariance structure of the data. The \code{\link[ecoCopula]{cord}} function uses two
-factors by default. The p-value is then obtained by parsing the inputed \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
+factors by default. The p-value is then obtained by parsing the \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
 \code{nsim} times with an effect size specified by \code{coeffs}.
 
 The test statistics are simulated under the hypothesis that the effect size equals a certain threshold.

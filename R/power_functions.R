@@ -11,17 +11,16 @@ utils::globalVariables(c(
 ))
 
 MVApowerstat = function(stats, coeffs) {
-  stats = 
-    anova(
-      extend(
-        object=object,
-        N=N,
-        coeffs=coeffs,
-        newdata=newdata,
-        n_replicate=n_replicate,
-        do.fit=do.fit
-      ), 
-    nBoot=1, 
+  stats = anova(
+    extend(
+      object=object,
+      N=N,
+      coeffs=coeffs,
+      newdata=newdata,
+      n_replicate=n_replicate,
+      do.fit=do.fit
+    ),
+    nBoot=1,
     test=test,
     show.time = "none"
   )$table[term,3]
