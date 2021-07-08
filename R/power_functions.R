@@ -11,7 +11,7 @@ utils::globalVariables(c(
 ))
 
 MVApowerstat = function(stats, coeffs) {
-  stats = anova(
+  anova(
     extend(
       object=object,
       N=N,
@@ -24,8 +24,6 @@ MVApowerstat = function(stats, coeffs) {
     test=test,
     show.time = "none"
   )$table[term,3]
-
-  return (stats)
 }
 
 MVApowerstatObj = function(stats) {
@@ -37,11 +35,14 @@ MVApowerstatObj = function(stats) {
     n_replicate=n_replicate,
     do.fit=do.fit
   )
-  extended_data = object_sim$data
-  object0_sim = update(object_sim, formula=object0$formula)
-  stats = anova(
+
+  object0_sim = update(
+    object_sim,
+    formula=object0$formula[-2],
+    data=object_sim$data
+  )
+
+  anova(
     object0_sim, object_sim, nBoot=1, test=test, show.time="none"
   )$table[2,3]
-
-  return (stats)
 }

@@ -190,9 +190,9 @@ get_stats = function(object, coeffs, term, object0, stats, test, nsim, ncores) {
     clusterExport(cl, objects(envir = .GlobalEnv), envir = .GlobalEnv)
     clusterExport(cl, objects(envir = environment()), envir = environment())
 
-    libraries = clusterEvalQ(cl, {
+    clusterEvalQ(cl, {
       library(mvabund)
-      library(parallel)
+      library(ecoCopula)
     })
 
     if (is.null(term)) {
