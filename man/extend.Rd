@@ -61,7 +61,7 @@ Response variables are simulated through a copula model by first extracting Gaus
 as Dunn-Smyth residuals (Dunn & Smyth 1996), which are obtained from abundances \eqn{y_{ij}} with marginal distributions
 \eqn{F_j} which have been specified via the original \code{manyglm} model (\code{fit.glm}; see examples);
 
-\deqn{z_{ij} = \Phi^{-1}{F_{j}(y_{ij}^-) + u_{ij} F_{j}(y_{ij})}}
+\deqn{z_{ij} = \Phi^{-1}{F_{j}(y_{ij}^-) + u_{ij} f_{j}(y_{ij})}}
 
  These scores then follow a multivariate Gaussian distribution with zero mean and covariance structure \eqn{\Sigma},
 

@@ -55,7 +55,7 @@
 #' @importFrom parallel makeCluster
 #' @rdname equivtest
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(ecoCopula)
 #' library(mvabund)
 #' data(spider)
@@ -71,7 +71,7 @@
 #' threshold = effect_alt(fit.glm, effect_size=1.5,
 #'        increasers, decreasers, term="bare.sand")
 #' fit.cord = cord(fit.glm)
-#' equivtest(fit.cord, coeffs=threshold, term="bare.sand", nsim=99)
+#' equivtest(fit.cord, coeffs=threshold, term="bare.sand", nsim=99, ncores=2)
 #'
 #' # Equivalence test for categorical predictor with 4 levels at effect_size=1.5
 #' X$Treatment = rep(c("A","B","C","D"),each=7)
@@ -79,12 +79,12 @@
 #' threshold = effect_alt(fit_factors.glm, effect_size=1.5,
 #'        increasers, decreasers, term="Treatment")
 #' fit_factors.cord = cord(fit_factors.glm)
-#' equivtest(fit_factors.cord, coeffs=threshold, term="Treatment", nsim=99)
+#' equivtest(fit_factors.cord, coeffs=threshold, term="Treatment", nsim=99, ncores=2)
 #'
 #' # Specify object0
 #' object0.glm = manyglm(spiddat~1, family="negative.binomial")
 #' object0.cord = cord(object0.glm)
-#' equivtest(fit_factors.cord, coeffs=threshold, object0=object0.cord, nsim=99)
+#' equivtest(fit_factors.cord, coeffs=threshold, object0=object0.cord, nsim=99, ncores=2)
 #' }
 #' @export
 

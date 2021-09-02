@@ -96,7 +96,7 @@ machine (\code{detectCores()-1}) is recommended to better avoid error relating t
 }}
 
 \examples{
-\dontrun{
+\donttest{
 library(ecoCopula)
 library(mvabund)
 data(spider)
@@ -112,7 +112,7 @@ fit.glm = manyglm(spiddat~bare.sand, family="negative.binomial", data=X)
 effect_mat = effect_alt(fit.glm, effect_size=1.5,
        increasers, decreasers, term="bare.sand")
 fit.cord = cord(fit.glm)
-powersim(fit.cord, coeffs=effect_mat, term="bare.sand", nsim=99)
+powersim(fit.cord, coeffs=effect_mat, term="bare.sand", nsim=99, ncores=2)
 
 # Find power for categorical predictor with 4 levels at effect_size=1.5
 X$Treatment = rep(c("A","B","C","D"),each=7)
@@ -120,13 +120,13 @@ fit_factors.glm = manyglm(spiddat~Treatment, family="negative.binomial", data=X)
 effect_mat = effect_alt(fit_factors.glm, effect_size=1.5,
        increasers, decreasers, term="Treatment")
 fit_factors.cord = cord(fit_factors.glm)
-powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99)
+powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99, ncores=2)
 
 # Change effect size parameterisation
 effect_mat = effect_alt(fit_factors.glm, effect_size=1.5,
                          increasers, decreasers, term="Treatment",
                          K=c(3,1,2))
-powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99)
+powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99, ncores=2)
 }
 }
 \seealso{
