@@ -1,7 +1,10 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Updated travis-ci URL in README.
+* Reduced title length to less than 65 characters.
+* Added a reference to the DESCRIPTION.
+* Replaced \dontrun{} with \donttest{}.
+* Ensured the examples use 2 cores.
 
 ## Test environments
 * local R installation, R 4.1.1
