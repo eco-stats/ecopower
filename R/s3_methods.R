@@ -1,19 +1,19 @@
 #' @describeIn effect_alt Specify multivariate effect sizes
-#' @export effect_alt
+#' @export
 effect_alt = function(object, effect_size, increasers, decreasers, term, K=NULL) {  
 
   UseMethod("effect_alt")
 }
 
 #' @describeIn effect_null Specify null effects for multivariate abundance data
-#' @export effect_null
+#' @export
 effect_null = function(object, term) {
 
   UseMethod("effect_null")
 }
 
 #' @describeIn equivtest Multivariate equivalence testing
-#' @export equivtest
+#' @export
 equivtest = function(object, coeffs, term=NULL, object0=NULL, 
   stats=NULL, test="LR", nsim=999, ncores=detectCores()-1, show.time=TRUE) {
   
@@ -21,7 +21,7 @@ equivtest = function(object, coeffs, term=NULL, object0=NULL,
 }
 
 #' @describeIn extend Simulate or extend multivariate abundance data
-#' @export extend
+#' @export
 extend = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj),
   newdata=NULL, n_replicate=NULL, do.fit=FALSE, seed=NULL) {
 
@@ -29,7 +29,7 @@ extend = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj),
 }
 
 #' @describeIn powersim Provide power estimates for multivariate abundance models
-#' @export powersim
+#' @export
 powersim = function(object, coeffs, term, N=nrow(object$obj$data),
   coeffs0=effect_null(object$obj, term), nsim=999, test="score",
   alpha=0.05, newdata=NULL, n_replicate=NULL,
