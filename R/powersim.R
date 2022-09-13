@@ -134,7 +134,7 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
 }
 
 get_power = function(criticalStat, stats, nsim) {
-  # change this function
+  # change nsim in this function
   p = rep(NA, length=nsim)
   p = stats + 1e-8 > criticalStat
   p = (sum(p)+1) / (nsim + 1)
