@@ -12,6 +12,7 @@
   N = nrow(object$obj$data),
   coeffs0 = effect_null(object$obj, term),
   nsim = 999,
+  ncrit = nsim,
   test = "score",
   alpha = 0.05,
   newdata = NULL,
@@ -47,7 +48,9 @@ See \code{\link{effect_alt}} for help in producing this matrix.}
 
 \item{coeffs0}{Coefficient matrix under the null hypothesis. Defaults to being specified by \code{\link{effect_null}}.}
 
-\item{nsim}{Number of simulations for power estimate to be based upon. Defaults to \code{999}.}
+\item{nsim}{Number of simulated test statistics under the specified effect size (\code{coeffs}) to estimate power. Defaults to \code{999}.}
+
+\item{ncrit}{Number of simulated test statistics under to estimate the null effect critical value. Defaults to \code{999}.}
 
 \item{test}{Test statistic for power estimate to based upon. Defaults to \code{"score"}, however \code{"wald"} is also allowed.}
 
@@ -77,24 +80,24 @@ specifies an effect size of interest and returns a power estimate.
 
 The power estimate is obtained by first parsing the \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
 \code{nsim} times with an effect size specified by \code{coeffs}. Next, the \code{\link[ecoCopula]{cord}} object is parsed into
-\code{\link{extend}} an additional \code{nsim} times with a null effect, which is defined by default by
-\code{\link{effect_null}}. This effectively simulates \code{nsim} \code{manyglm} models under both the null
+\code{\link{extend}} an additional \code{ncrit} times with a null effect, which is defined by default by
+\code{\link{effect_null}}. This effectively simulates \code{nsim} + \code{ncrit} \code{manyglm} models under both the null
 and alternative hypothesis.
 
-For each simulated \code{\link[mvabund]{manyglm}} object a test statistic \code{test} is obtained. A critical test statistic
+For each simulated \code{\link[mvabund]{manyglm}} object, a test statistic \code{test} is obtained. A critical test statistic
 is then obtained as the upper 1 - \code{alpha} quantile of simulated test statistics under the null
 hypothesis. Power is then estimated as the proportion of times the test statistics simulated under
 the alternative hypothesis exceed the critical test statistic under the null.
 
 To improve computation time, simulations are computed in parallel using the "socket" approach, which
 by default uses all available cores minus 1 for clustering. Using 1 less than the number of available cores for your
-machine (\code{detectCores()-1}) is recommended to better avoid error relating to clustering or nodes.
+machine (\code{detectCores()-1}) is recommended to better avoid errors relating to clustering or nodes.
 }
 \section{Functions}{
 \itemize{
-\item \code{powersim}: Provide power estimates for multivariate abundance models
-}}
+\item \code{powersim()}: Provide power estimates for multivariate abundance models
 
+}}
 \examples{
 \donttest{
 library(ecoCopula)
@@ -112,7 +115,7 @@ fit.glm = manyglm(spiddat~bare.sand, family="negative.binomial", data=X)
 effect_mat = effect_alt(fit.glm, effect_size=1.5,
        increasers, decreasers, term="bare.sand")
 fit.cord = cord(fit.glm)
-powersim(fit.cord, coeffs=effect_mat, term="bare.sand", nsim=99, ncores=2)
+powersim(fit.cord, coeffs=effect_mat, term="bare.sand", nsim=99, ncrit=99, ncores=2)
 
 # Find power for categorical predictor with 4 levels at effect_size=1.5
 X$Treatment = rep(c("A","B","C","D"),each=7)
@@ -120,13 +123,13 @@ fit_factors.glm = manyglm(spiddat~Treatment, family="negative.binomial", data=X)
 effect_mat = effect_alt(fit_factors.glm, effect_size=1.5,
        increasers, decreasers, term="Treatment")
 fit_factors.cord = cord(fit_factors.glm)
-powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99, ncores=2)
+powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99, ncrit=99, ncores=2)
 
 # Change effect size parameterisation
 effect_mat = effect_alt(fit_factors.glm, effect_size=1.5,
                          increasers, decreasers, term="Treatment",
                          K=c(3,1,2))
-powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99, ncores=2)
+powersim(fit_factors.cord, coeffs=effect_mat, term="Treatment", nsim=99, ncrit=99, ncores=2)
 }
 }
 \seealso{

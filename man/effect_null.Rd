@@ -28,9 +28,9 @@ Note that intercept values are parameterised as in \code{\link{effect_alt}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{effect_null}: Specify null effects for multivariate abundance data
-}}
+\item \code{effect_null()}: Specify null effects for multivariate abundance data
 
+}}
 \examples{
 library(mvabund)
 data(spider)

@@ -85,9 +85,9 @@ machine (\code{detectCores()-1}) is recommended to leave one core available for 
 }
 \section{Functions}{
 \itemize{
-\item \code{equivtest}: Multivariate equivalence testing
-}}
+\item \code{equivtest()}: Multivariate equivalence testing
 
+}}
 \examples{
 \donttest{
 library(ecoCopula)

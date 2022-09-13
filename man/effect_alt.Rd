@@ -73,9 +73,9 @@ character otherwise results may be misleading.
 }
 \section{Functions}{
 \itemize{
-\item \code{effect_alt}: Specify multivariate effect sizes
-}}
+\item \code{effect_alt()}: Specify multivariate effect sizes
 
+}}
 \examples{
 library(mvabund)
 data(spider)
