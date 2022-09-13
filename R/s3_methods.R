@@ -33,7 +33,7 @@ extend = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj),
 powersim = function(object, coeffs, term, N=nrow(object$obj$data),
   coeffs0=effect_null(object$obj, term), nsim=999,ncrit=nsim, test="score",
   alpha=0.05, newdata=NULL, n_replicate=NULL,
-  ncores=detectCores()-1, show.time=TRUE) {
+  ncores=detectCores()-1, show.time=TRUE, long_power=FALSE) {
 
   UseMethod("powersim")
 }

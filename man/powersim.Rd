@@ -18,7 +18,8 @@
   newdata = NULL,
   n_replicate = NULL,
   ncores = detectCores() - 1,
-  show.time = TRUE
+  show.time = TRUE,
+  long_power = FALSE
 )
 
 powersim(
@@ -28,12 +29,14 @@ powersim(
   N = nrow(object$obj$data),
   coeffs0 = effect_null(object$obj, term),
   nsim = 999,
+  ncrit = nsim,
   test = "score",
   alpha = 0.05,
   newdata = NULL,
   n_replicate = NULL,
   ncores = detectCores() - 1,
-  show.time = TRUE
+  show.time = TRUE,
+  long_power = FALSE
 )
 }
 \arguments{
@@ -65,6 +68,10 @@ See \code{\link{effect_alt}} for help in producing this matrix.}
 machine minus 1.}
 
 \item{show.time}{Logical. Displays time elapsed. Defaults to \code{TRUE}.}
+
+\item{long_power}{Logical. Whether to estimate power using separate critical test statistics for each \code{nsim} test statistics
+simulated under the alternative hypothesis. Note that although this will give a more accurate estimate of power, it will
+take a considerably large amount of time. First try increasing \code{ncrit}. Defaults to \code{FALSE}}
 }
 \value{
 Power estimate result, and;

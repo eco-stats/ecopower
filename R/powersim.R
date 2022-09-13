@@ -38,6 +38,9 @@
 #' @param ncores Number of cores for parallel computing. Defaults to the total number of cores available on the
 #' machine minus 1.
 #' @param show.time Logical. Displays time elapsed. Defaults to \code{TRUE}.
+#' @param long_power Logical. Whether to estimate power using separate critical test statistics for each \code{nsim} test statistics
+#' simulated under the alternative hypothesis. Note that although this will give a more accurate estimate of power, it will
+#' take a considerably large amount of time. First try increasing \code{ncrit}. Defaults to \code{FALSE}
 #' @return Power estimate result, and;
 #' \item{\code{power}}{power.}
 #' @seealso \code{\link{effect_alt}}, \code{\link{effect_null}}, \code{\link{extend}}
@@ -87,10 +90,14 @@
 powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
    coeffs0=effect_null(object$obj, term), nsim=999,ncrit=nsim, test="score",
    alpha=0.05, newdata=NULL, n_replicate=NULL,
-   ncores=detectCores()-1, show.time=TRUE) {
+   ncores=detectCores()-1, show.time=TRUE, long_power=FALSE) {
 
   check_coeffs(coeffs)
+  if (long_power==FALSE){
   stats.null = rep(NA,ncrit)
+  } else {
+    stats.null =rep(NA,nsim*ncrit)
+  }
   stats = rep(NA,nsim)
   do.fit = TRUE
 
@@ -110,6 +117,22 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
   criticalStat = quantile(
     unlist(stats.null[!is.na(unlist(stats.null))]), 1-alpha, na.rm=TRUE
   )
+
+
+  if (long_power){
+    #change stats.null to a matrix of null test statistics
+    stats.null.mat = matrix(stats.null,nrow=ncrit,ncol=nsim)
+
+    #create vector for criticalStat
+    criticalStat = rep(NA,nsim)
+
+    for (i in c(1:nsim)){
+      criticalStat[i] = quantile(
+        unlist(stats.null.mat[,i][!is.na(unlist(stats.null.mat[,i]))]), 1-alpha, na.rm=TRUE)
+    }
+  }
+
+
   # criticalStat_lower = quantile(
   #   unlist(stats.null[!is.na(unlist(stats.null))]), 1-alpha+0.025, na.rm=TRUE
   # )
@@ -122,7 +145,6 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
 
   stopCluster(cl)
 
-  #print(c(mean(stats[!is.na(stats)]>criticalStat),mean(stats[!is.na(stats)]>criticalStat_lower),mean(stats[!is.na(stats)]>criticalStat_upper),new))
   power = get_power(criticalStat, stats, nsim)
 
   out = list(power = power)
