@@ -114,12 +114,12 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
   # criticalStat_upper = quantile(
   #   unlist(stats.null[!is.na(unlist(stats.null))]), 1-alpha-0.025, na.rm=TRUE
   # )
-  
+
   # Observe the proportion of times our test statistics exceed this value
   stats = unlist(parSapply(cl, stats, MVApowerstat, coeffs=coeffs))
-  
+
   stopCluster(cl)
-  
+
   #print(c(mean(stats[!is.na(stats)]>criticalStat),mean(stats[!is.na(stats)]>criticalStat_lower),mean(stats[!is.na(stats)]>criticalStat_upper),new))
   power = get_power(criticalStat, stats, nsim)
 
@@ -129,11 +129,12 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
   print_time(elapsed, show.time)
 
   #print(binom.confint(table((stats[!is.na(stats)]>criticalStat))[2],n=nsim,method="wilson")[c(5,6)])
-  class(out) = "powersim.cord" 
+  class(out) = "powersim.cord"
   return (out)
 }
 
 get_power = function(criticalStat, stats, nsim) {
+  # change this function
   p = rep(NA, length=nsim)
   p = stats + 1e-8 > criticalStat
   p = (sum(p)+1) / (nsim + 1)
