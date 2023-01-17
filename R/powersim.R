@@ -92,6 +92,10 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
    alpha=0.05, newdata=NULL, n_replicate=NULL,
    ncores=detectCores()-1, show.time=TRUE, long_power=FALSE) {
 
+
+
+
+
   check_coeffs(coeffs)
   if (long_power==FALSE){
   stats.null = rep(NA,ncrit)
@@ -112,10 +116,13 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
     library(parallel)
   })
 
+  # obtain test statistics under the alternative hypothesis
+  stats = unlist(parSapply(cl, stats, MVApowerstat, coeffs=coeffs))
+
   # Find critical value under the null
-  stats.null = parSapply(cl, stats.null, MVApowerstat, coeffs=coeffs0)
+  stats.null = c(stats[1],unlist(parSapply(cl, stats.null, MVApowerstat, coeffs=coeffs0)))
   criticalStat = quantile(
-    unlist(stats.null[!is.na(unlist(stats.null))]), 1-alpha, na.rm=TRUE
+    unlist(stats.null[!is.na(stats.null)]), 1-alpha, na.rm=TRUE
   )
 
 
@@ -140,9 +147,8 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
   #   unlist(stats.null[!is.na(unlist(stats.null))]), 1-alpha-0.025, na.rm=TRUE
   # )
 
-  # Observe the proportion of times our test statistics exceed this value
-  stats = unlist(parSapply(cl, stats, MVApowerstat, coeffs=coeffs))
 
+  # Observe the proportion of times our test statistics exceed this value
   stopCluster(cl)
 
   power = get_power(criticalStat, stats, npow)
