@@ -26,6 +26,43 @@ MVApowerstat = function(stats, coeffs) {
   )$table[term,3]
 }
 
+MVApowerstat_long_alt = function(stats, coeffs) {
+  alt_mod = extend(
+    object=object,
+    N=N,
+    coeffs=coeffs,
+    newdata=newdata,
+    n_replicate=n_replicate,
+    do.fit=TRUE
+  )
+  stat = anova(alt_mod,
+    nBoot=1,
+    test=test,
+    show.time = "none"
+  )$table[term,3]
+  results = list(stat,alt_mod)
+}
+
+
+
+MVApowerstat_long_null = function(stats,alt_mod,coeffs) {
+  anova(
+    extend(
+      object=alt_mod,
+      N=N,
+      coeffs=coeffs,
+      newdata=newdata,
+      n_replicate=n_replicate,
+      do.fit=do.fit
+    ),
+    nBoot=1,
+    test=test,
+    show.time = "none"
+  )$table[term,3]
+}
+
+
+
 MVApowerstatObj = function(stats) {
   object_sim = extend(
     object=object,
