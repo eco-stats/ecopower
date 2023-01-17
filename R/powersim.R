@@ -93,9 +93,6 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
    ncores=detectCores()-1, show.time=TRUE, long_power=FALSE) {
 
 
-
-
-
   check_coeffs(coeffs)
   if (long_power==FALSE){
   stats.null = rep(NA,ncrit)
@@ -120,13 +117,12 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
   stats = unlist(parSapply(cl, stats, MVApowerstat, coeffs=coeffs))
 
   # Find critical value under the null
-  stats.null = c(stats[1],unlist(parSapply(cl, stats.null, MVApowerstat, coeffs=coeffs0)))
-  criticalStat = quantile(
-    unlist(stats.null[!is.na(stats.null)]), 1-alpha, na.rm=TRUE
-  )
 
 
   if (long_power){
+
+    stats.null = unlist(parSapply(cl, stats.null, MVApowerstat, coeffs=coeffs0))
+
     #change stats.null to a matrix of null test statistics
     stats.null.mat = matrix(stats.null,nrow=ncrit,ncol=npow)
 
@@ -135,8 +131,14 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
 
     for (i in c(1:npow)){
       criticalStat[i] = quantile(
-        unlist(stats.null.mat[,i][!is.na(unlist(stats.null.mat[,i]))]), 1-alpha, na.rm=TRUE)
+        unlist(stats.null.mat[,i][!is.na(c(unlist(stats.null.mat[,i]),stats[i]))]), 1-alpha, na.rm=TRUE)
     }
+  } else {
+    stats.null = c(stats[1],unlist(parSapply(cl, stats.null, MVApowerstat, coeffs=coeffs0)))
+    criticalStat = quantile(
+      unlist(stats.null[!is.na(stats.null)]), 1-alpha, na.rm=TRUE
+    )
+
   }
 
 
