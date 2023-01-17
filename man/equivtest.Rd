@@ -12,7 +12,7 @@
   object0 = NULL,
   stats = NULL,
   test = "LR",
-  nsim = 999,
+  npow = 999,
   ncores = detectCores() - 1,
   show.time = TRUE
 )
@@ -24,7 +24,7 @@ equivtest(
   object0 = NULL,
   stats = NULL,
   test = "LR",
-  nsim = 999,
+  npow = 999,
   ncores = detectCores() - 1,
   show.time = TRUE
 )
@@ -44,7 +44,7 @@ simulate test statistics and use the \code{stats} specified.}
 
 \item{test}{Test statistic for computing p-value. Defaults to \code{"LR"}.}
 
-\item{nsim}{Number of simulations for p-value estimate to be based upon. Defaults to \code{999}.}
+\item{npow}{Number of simulations for p-value estimate to be based upon. Defaults to \code{999}.}
 
 \item{ncores}{Number of cores for parallel computing. Defaults to the total number of cores available on the
 machine minus 1.}
@@ -68,7 +68,7 @@ interest to perform an equivalence test.
 First, marginal parameters of the data are obtained from a \code{\link[mvabund]{manyglm}} object. Next, a copula model is fitted
 using \code{\link[ecoCopula]{cord}} to estimate the factor analytic covariance structure of the data. The \code{\link[ecoCopula]{cord}} function uses two
 factors by default. The p-value is then obtained by parsing the \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
-\code{nsim} times with an effect size specified by \code{coeffs}.
+\code{npow} times with an effect size specified by \code{coeffs}.
 
 The test statistics are simulated under the hypothesis that the effect size equals a certain threshold.
 The p-value is computed as the proportion of times the simulated test statistics are less than the observed
@@ -105,7 +105,7 @@ fit.glm = manyglm(spiddat~bare.sand, family="negative.binomial", data=X)
 threshold = effect_alt(fit.glm, effect_size=1.5,
        increasers, decreasers, term="bare.sand")
 fit.cord = cord(fit.glm)
-equivtest(fit.cord, coeffs=threshold, term="bare.sand", nsim=99, ncores=2)
+equivtest(fit.cord, coeffs=threshold, term="bare.sand", npow=99, ncores=2)
 
 # Equivalence test for categorical predictor with 4 levels at effect_size=1.5
 X$Treatment = rep(c("A","B","C","D"),each=7)
@@ -113,12 +113,12 @@ fit_factors.glm = manyglm(spiddat~Treatment, family="negative.binomial", data=X)
 threshold = effect_alt(fit_factors.glm, effect_size=1.5,
        increasers, decreasers, term="Treatment")
 fit_factors.cord = cord(fit_factors.glm)
-equivtest(fit_factors.cord, coeffs=threshold, term="Treatment", nsim=99, ncores=2)
+equivtest(fit_factors.cord, coeffs=threshold, term="Treatment", npow=99, ncores=2)
 
 # Specify object0
 object0.glm = manyglm(spiddat~1, family="negative.binomial")
 object0.cord = cord(object0.glm)
-equivtest(fit_factors.cord, coeffs=threshold, object0=object0.cord, nsim=99, ncores=2)
+equivtest(fit_factors.cord, coeffs=threshold, object0=object0.cord, npow=99, ncores=2)
 }
 }
 \seealso{

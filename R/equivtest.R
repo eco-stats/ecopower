@@ -7,11 +7,11 @@
 #' @details
 #' \code{equivtest} takes a \code{\link[ecoCopula]{cord}} object and a coefficient matrix \code{coeffs} which specifies an effect size of
 #' interest to perform an equivalence test.
-#' 
+#'
 #' First, marginal parameters of the data are obtained from a \code{\link[mvabund]{manyglm}} object. Next, a copula model is fitted
 #' using \code{\link[ecoCopula]{cord}} to estimate the factor analytic covariance structure of the data. The \code{\link[ecoCopula]{cord}} function uses two
 #' factors by default. The p-value is then obtained by parsing the \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
-#' \code{nsim} times with an effect size specified by \code{coeffs}.
+#' \code{npow} times with an effect size specified by \code{coeffs}.
 #'
 #' The test statistics are simulated under the hypothesis that the effect size equals a certain threshold.
 #' The p-value is computed as the proportion of times the simulated test statistics are less than the observed
@@ -31,9 +31,9 @@
 #' @param term Name of predictor of interest in quotes. Defaults to \code{NULL}, see details.
 #' @param object0 object of class \code{cord} that specifies the null hypothesis. Defaults to \code{NULL}, see details.
 #' @param stats Statistics simulated under the null hypothesis. Optional, defaults to \code{NULL}. If not \code{NULL}, \code{equivtest} will not
-#' simulate test statistics and use the \code{stats} specified. 
+#' simulate test statistics and use the \code{stats} specified.
 #' @param test Test statistic for computing p-value. Defaults to \code{"LR"}.
-#' @param nsim Number of simulations for p-value estimate to be based upon. Defaults to \code{999}.
+#' @param npow Number of simulations for p-value estimate to be based upon. Defaults to \code{999}.
 #' @param ncores Number of cores for parallel computing. Defaults to the total number of cores available on the
 #' machine minus 1.
 #' @param show.time Logical. Displays time elapsed. Defaults to \code{TRUE}.
@@ -71,7 +71,7 @@
 #' threshold = effect_alt(fit.glm, effect_size=1.5,
 #'        increasers, decreasers, term="bare.sand")
 #' fit.cord = cord(fit.glm)
-#' equivtest(fit.cord, coeffs=threshold, term="bare.sand", nsim=99, ncores=2)
+#' equivtest(fit.cord, coeffs=threshold, term="bare.sand", npow=99, ncores=2)
 #'
 #' # Equivalence test for categorical predictor with 4 levels at effect_size=1.5
 #' X$Treatment = rep(c("A","B","C","D"),each=7)
@@ -79,28 +79,28 @@
 #' threshold = effect_alt(fit_factors.glm, effect_size=1.5,
 #'        increasers, decreasers, term="Treatment")
 #' fit_factors.cord = cord(fit_factors.glm)
-#' equivtest(fit_factors.cord, coeffs=threshold, term="Treatment", nsim=99, ncores=2)
+#' equivtest(fit_factors.cord, coeffs=threshold, term="Treatment", npow=99, ncores=2)
 #'
 #' # Specify object0
 #' object0.glm = manyglm(spiddat~1, family="negative.binomial")
 #' object0.cord = cord(object0.glm)
-#' equivtest(fit_factors.cord, coeffs=threshold, object0=object0.cord, nsim=99, ncores=2)
+#' equivtest(fit_factors.cord, coeffs=threshold, object0=object0.cord, npow=99, ncores=2)
 #' }
 #' @export
 
-equivtest.cord = function(object, coeffs, term=NULL, object0=NULL, 
-  stats=NULL, test="LR", nsim=999, ncores=detectCores()-1, show.time=TRUE) {
-  
+equivtest.cord = function(object, coeffs, term=NULL, object0=NULL,
+  stats=NULL, test="LR", npow=999, ncores=detectCores()-1, show.time=TRUE) {
+
   ptm = proc.time()
 
   check_equivtest_args(coeffs, object0)
   term = get_term(object$obj, term, object0$obj)
   object0 = get_object0(object$obj, term, object0$obj)
-  stats = get_stats(object, coeffs, term, object0, stats, test, nsim, ncores)
+  stats = get_stats(object, coeffs, term, object0, stats, test, npow, ncores)
   object = object$obj
   anova_obj = anova(object0, object, test=test, nBoot=1, show.time="none")
   stat_obs = anova_obj$table[2,ncol(anova_obj$table)-1]
-  p = get_pval(stat_obs, stats, nsim)
+  p = get_pval(stat_obs, stats, npow)
 
   # inputs for default.print.anova.manyglm
   topnote = get_topnote(object0, object, resamp=anova_obj$resamp)
@@ -113,12 +113,12 @@ equivtest.cord = function(object, coeffs, term=NULL, object0=NULL,
     stat_obs = stat_obs,
     coefficients = coeffs,
     term = term,
-    stats = stats, 
+    stats = stats,
     test = anova_obj$test,
     cor.type = anova_obj$cor.type,
     resamp = anova_obj$resamp,
-    nsim = nsim,
-    n.bootsdone = nsim,
+    npow = npow,
+    n.bootsdone = npow,
     p.uni = anova_obj$p.uni,
     table = anova_obj$table
   )
@@ -155,10 +155,10 @@ get_object0 = function(object, term, object0) {
     if (length(labels(terms(object))) > 1) {
       term_position = grep(term, attr(object$terms, "term.labels"))
       object0 = update(
-        object, 
+        object,
         formula = drop.terms(
-          object$terms, 
-          term_position, 
+          object$terms,
+          term_position,
           keep.response = TRUE
         )
       )
@@ -176,9 +176,9 @@ get_object0 = function(object, term, object0) {
   return (object0)
 }
 
-get_stats = function(object, coeffs, term, object0, stats, test, nsim, ncores) {
+get_stats = function(object, coeffs, term, object0, stats, test, npow, ncores) {
   if (is.null(stats)) {
-    stats = rep(NA,nsim)
+    stats = rep(NA,npow)
     N = nrow(object$obj$data)
     coeffs = coeffs
     newdata = NULL
@@ -208,9 +208,9 @@ get_stats = function(object, coeffs, term, object0, stats, test, nsim, ncores) {
   return (stats)
 }
 
-get_pval = function(stat_obs, stats, nsim) {
-  p = rep(NA, length=nsim)
+get_pval = function(stat_obs, stats, npow) {
+  p = rep(NA, length=npow)
   p = stats < stat_obs + 1e-8
-  p = (sum(p)+1) / (nsim + 1)
+  p = (sum(p)+1) / (npow + 1)
   return (p)
 }
