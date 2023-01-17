@@ -167,6 +167,5 @@ get_power = function(criticalStat, stats, npow) {
   # change npow in this function
   p = rep(NA, length=npow)
   p = stats + 1e-8 > criticalStat
-  p = (sum(p)+1) / (npow + 1)
-  return (p)
+  return (mean(p,na.rm=TRUE))
 }
