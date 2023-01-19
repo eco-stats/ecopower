@@ -117,12 +117,12 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
 
 
   if (long_power){
-
     # obtain test statistics under the alternative hypothesis
-    stats = unlist(parSapply(cl, stats, MVApowerstat_long_alt, coeffs=coeffs)[1,])
-    alt_mods = parSapply(cl, stats, MVApowerstat_long_alt, coeffs=coeffs)[2,]
+    #alt_sims = parSapply(cl, stats, MVApowerstat_long_alt, coeffs=coeffs)
+    stats = unlist(parSapply(cl, stats, MVApowerstat, coeffs=coeffs))
 
-
+    #stats = unlist(alt_sims[1,])
+    #alt_mods = alt_sims[2,]
     #stats.null = unlist(parSapply(cl, stats.null, MVApowerstat, coeffs=coeffs0))
 
     #change stats.null to a matrix of null test statistics
@@ -132,12 +132,13 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
     criticalStat = rep(NA,npow)
 
     for (i in c(1:npow)){
-      fit_alt.cord = cord(alt_mods[[i]])
-      extended_data <<- data.frame(fit_alt.cord$obj$x)
-      coeffs0_l = effect_null(fit_alt.cord$obj, term="Site.Type")
-      stats.null.mat[,i] = unlist(parSapply(cl, stats.null.mat[,i], MVApowerstat_long_null, alt_mod=fit_alt.cord,coeffs=coeffs0_l))
-      criticalStat[i] = quantile(
-        unlist(stats.null.mat[,i][!is.na(c(unlist(stats.null.mat[,i]),stats[i]))]), 1-alpha, na.rm=TRUE)
+      #fit_alt.cord = cord(alt_mods[[i]])
+      #extended_data <<- data.frame(fit_alt.cord$obj$x)
+      #coeffs0_l = effect_null(fit_alt.cord$obj, term="Site.Type")
+      #stats.null_f = c(stats[i],unlist(parSapply(cl, stats.null.mat[,i], MVApowerstat_long_null, alt_mod=fit_alt.cord,coeffs=coeffs0_l)))
+      stats.null_f = c(stats[i],unlist(parSapply(cl, stats.null.mat[,i], MVApowerstat, coeffs=coeffs0)))
+       criticalStat[i] = quantile(
+        unlist(stats.null_f[!is.na(c(unlist(stats.null_f)))]), 1-alpha, na.rm=TRUE)
     }
   } else {
 
