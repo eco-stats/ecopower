@@ -26,21 +26,26 @@ MVApowerstat = function(stats, coeffs) {
   )$table[term,3]
 }
 
+
+
 MVApowerstat_long_alt = function(stats, coeffs) {
-  alt_mod = extend(
+  alt_mod = cord(extend(
     object=object,
     N=N,
     coeffs=coeffs,
     newdata=newdata,
     n_replicate=n_replicate,
     do.fit=TRUE
-  )
-  stat = anova(alt_mod,
-    nBoot=1,
-    test=test,
-    show.time = "none"
+  ),n.samp=100)
+  extended_data <<- data.frame(alt_mod$obj$x)
+  coeffs0_l = effect_null(alt_mod$obj, term="Site.Type")
+
+  stat = anova(alt_mod$obj,
+               nBoot=1,
+               test=test,
+               show.time = "none"
   )$table[term,3]
-  results = list(stat,alt_mod)
+  results = list(stat,alt_mod,coeffs0_l)
 }
 
 
@@ -49,6 +54,25 @@ MVApowerstat_long_null = function(stats,alt_mod,coeffs) {
   anova(
     extend(
       object=alt_mod,
+      N=N,
+      coeffs=coeffs,
+      newdata=newdata,
+      n_replicate=n_replicate,
+      do.fit=do.fit
+    ),
+    nBoot=1,
+    test=test,
+    show.time = "none"
+  )$table[term,3]
+}
+
+MVApowerstat_long_null_2 = function(stats,alt_mods,coeffs) {
+  mod = sample(1:npow,1)
+  object = alt_mods[[mod]]
+  coeffs = coeffs[[mod]]
+  res = anova(
+    extend(
+      object=object,
       N=N,
       coeffs=coeffs,
       newdata=newdata,

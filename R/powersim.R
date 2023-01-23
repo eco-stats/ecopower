@@ -132,9 +132,9 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
     criticalStat = rep(NA,npow)
 
     for (i in c(1:npow)){
-      fit_alt.cord = cord(alt_mods[[i]])
+      fit_alt.cord = alt_mods[[i]]
       extended_data <<- data.frame(fit_alt.cord$obj$x)
-      coeffs0_l = effect_null(fit_alt.cord$obj, term="Site.Type")
+      coeffs0_l = effect_null(fit_alt.cord$obj, term=term)
       stats.null_f = c(stats[i],unlist(parSapply(cl, stats.null.mat[,i], MVApowerstat_long_null, alt_mod=fit_alt.cord,coeffs=coeffs0_l)))
       #stats.null_f = c(stats[i],unlist(parSapply(cl, stats.null.mat[,i], MVApowerstat, coeffs=coeffs0)))
        criticalStat[i] = quantile(
@@ -143,11 +143,45 @@ powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
   } else {
 
     # obtain test statistics under the alternative hypothesis
-    stats = unlist(parSapply(cl, stats, MVApowerstat, coeffs=coeffs))
+    #stats = unlist(parSapply(cl, stats, MVApowerstat, coeffs=coeffs))
 
-    # Find critical value under the null
+    # obtain test statistics under the alternative hypothesis
+     alt_sims = parSapply(cl, stats, MVApowerstat_long_alt, coeffs=coeffs)
+    #stats = unlist(parSapply(cl, stats, MVApowerstat, coeffs=coeffs))
 
-    stats.null = c(stats[1],unlist(parSapply(cl, stats.null, MVApowerstat, coeffs=coeffs0)))
+     stats = unlist(alt_sims[1,])
+     alt_mods = alt_sims[2,]
+     coeffs_0 = alt_sims[3,]
+
+
+
+
+    stats.null = c(stats[1],unlist(parSapply(cl, stats.null, MVApowerstat_long_null_2, coeffs=coeffs_0,alt_mods=alt_mods)))
+
+
+
+    # for (i in c(1:ncrit)){
+    #   #extended_data <<- data.frame(alt_mods_rd[[i]]$obj$x)
+    #   #coeffs0_l = effect_null(alt_mods_rd[[i]]$obj, term=term)
+    #   stats.null[i] <- anova(
+    #     extend(
+    #       object=alt_mods[[alt_mods_id[i]]],
+    #       N=N,
+    #       coeffs=coeffs_0[[alt_mods_id[i]]],
+    #       newdata=newdata,
+    #       n_replicate=n_replicate,
+    #       do.fit=do.fit
+    #     ),
+    #     nBoot=1,
+    #     test=test,
+    #     show.time = "none"
+    #   )$table[term,3]
+    # }
+
+    #stats.null <- c(stats[1],stats.null)
+
+
+    #stats.null = c(stats[1],unlist(parSapply(cl, stats.null, MVApowerstat, coeffs=coeffs0)))
     criticalStat = quantile(
       unlist(stats.null[!is.na(stats.null)]), 1-alpha, na.rm=TRUE
     )
