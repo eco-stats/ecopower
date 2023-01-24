@@ -36,9 +36,9 @@ MVApowerstat_long_alt = function(stats, coeffs) {
     newdata=newdata,
     n_replicate=n_replicate,
     do.fit=TRUE
-  ),n.samp=100)
+  ),n.samp=4)
   extended_data <<- data.frame(alt_mod$obj$x)
-  coeffs0_l = effect_null(alt_mod$obj, term="Site.Type")
+  coeffs0_l = effect_null(alt_mod$obj, term=term)
 
   stat = anova(alt_mod$obj,
                nBoot=1,
