@@ -40,7 +40,10 @@
 #' @param show.time Logical. Displays time elapsed. Defaults to \code{TRUE}.
 #' @param long_power Logical. Whether to estimate power using separate critical test statistics for each \code{npow} test statistics
 #' simulated under the alternative hypothesis. Note that although this will give a more accurate estimate of power, it will
-#' take a considerably large amount of time. First try increasing \code{ncrit}. Defaults to \code{FALSE}
+#' take a considerably large amount of time. First try increasing \code{ncrit}. Defaults to \code{FALSE}.
+#' @param n.samp integer, number of sets of residuals for importance sampling for the copula model with cord. Defaults to \code{10}, recommend setting this
+#' higher for smaller sample sizes \code{N}.
+#' @param nlv number of latent variables (default = 2) for the copula model with cord, recommend setting this lower for smaller sample sizes \code{N}.
 #' @return Power estimate result, and;
 #' \item{\code{power}}{power.}
 #' @seealso \code{\link{effect_alt}}, \code{\link{effect_null}}, \code{\link{extend}}
@@ -90,7 +93,7 @@
 powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
    coeffs0=effect_null(object$obj, term), npow=1000,ncrit=999, test="score",
    alpha=0.05, newdata=NULL, n_replicate=NULL,
-   ncores=detectCores()-1, show.time=TRUE, long_power=FALSE) {
+   ncores=detectCores()-1, show.time=TRUE, long_power=FALSE, n.samp=10, nlv=2) {
 
 
   check_coeffs(coeffs)

@@ -36,7 +36,7 @@ MVApowerstat_long_alt = function(stats, coeffs) {
     newdata=newdata,
     n_replicate=n_replicate,
     do.fit=TRUE
-  ),n.samp=500)
+  ),n.samp=n.samp,nlv = nlv)
   extended_data <<- data.frame(alt_mod$obj$x)
   coeffs0_l = effect_null(alt_mod$obj, term=term)
 
