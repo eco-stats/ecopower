@@ -94,7 +94,7 @@ MVApowerstat_long_null = function(stats,alt_mod,coeffs) {
 }
 
 MVApowerstat_long_null_2 = function(stats,alt_mods,coeffs) {
-  mod = sample(1:npow,1)
+  mod = sample(1:nsim,1)
   object = alt_mods[[mod]]
   coeffs = coeffs[[mod]]
   res = anova(
