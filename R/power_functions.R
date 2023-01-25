@@ -29,23 +29,41 @@ MVApowerstat = function(stats, coeffs) {
 
 
 MVApowerstat_long_alt = function(stats, coeffs) {
-  alt_mod = tryCatch(cord(extend(
-    object=object,
-    N=N,
-    coeffs=coeffs,
-    newdata=newdata,
-    n_replicate=n_replicate,
-    do.fit=TRUE
-  ),n.samp=n.samp,nlv = nlv),
-  error = message("Error in factanal, try increasing n.samp and decreasing nlv"),
-  finally=cord(extend(
-    object=object,
-    N=N,
-    coeffs=coeffs,
-    newdata=newdata,
-    n_replicate=n_replicate,
-    do.fit=TRUE
-  ),n.samp=n.samp,nlv = nlv))
+  # alt_mod = tryCatch(cord(extend(
+  #   object=object,
+  #   N=N,
+  #   coeffs=coeffs,
+  #   newdata=newdata,
+  #   n_replicate=n_replicate,
+  #   do.fit=TRUE
+  # ),n.samp=n.samp,nlv = nlv),
+  # error = message("Error in factanal, try increasing n.samp and decreasing nlv"),
+  # finally=cord(extend(
+  #   object=object,
+  #   N=N,
+  #   coeffs=coeffs,
+  #   newdata=newdata,
+  #   n_replicate=n_replicate,
+  #   do.fit=TRUE
+  # ),n.samp=n.samp,nlv = nlv))
+
+  boolFalse<-F
+  while(boolFalse==F)
+  {
+    tryCatch({
+      alt_mod = cord(extend(
+        object=object,
+        N=N,
+        coeffs=coeffs,
+        newdata=newdata,
+        n_replicate=n_replicate,
+        do.fit=TRUE
+      ),n.samp=n.samp,nlv = nlv)
+      boolFalse<-T
+    },error=function(e){warning("Error in factanal, try increasing n.samp and decreasing nlv if this code takes too long to run.")
+    },finally={})
+  }
+
   extended_data <<- data.frame(alt_mod$obj$x)
   coeffs0_l = effect_null(alt_mod$obj, term=term)
 
