@@ -7,7 +7,7 @@
 #' @details
 #' \code{equivtest} takes a \code{\link[ecoCopula]{cord}} object and a coefficient matrix \code{coeffs} which specifies an effect size of
 #' interest to perform an equivalence test.
-#' 
+#'
 #' First, marginal parameters of the data are obtained from a \code{\link[mvabund]{manyglm}} object. Next, a copula model is fitted
 #' using \code{\link[ecoCopula]{cord}} to estimate the factor analytic covariance structure of the data. The \code{\link[ecoCopula]{cord}} function uses two
 #' factors by default. The p-value is then obtained by parsing the \code{\link[ecoCopula]{cord}} object into \code{\link{extend}},
@@ -31,7 +31,7 @@
 #' @param term Name of predictor of interest in quotes. Defaults to \code{NULL}, see details.
 #' @param object0 object of class \code{cord} that specifies the null hypothesis. Defaults to \code{NULL}, see details.
 #' @param stats Statistics simulated under the null hypothesis. Optional, defaults to \code{NULL}. If not \code{NULL}, \code{equivtest} will not
-#' simulate test statistics and use the \code{stats} specified. 
+#' simulate test statistics and use the \code{stats} specified.
 #' @param test Test statistic for computing p-value. Defaults to \code{"LR"}.
 #' @param nsim Number of simulations for p-value estimate to be based upon. Defaults to \code{999}.
 #' @param ncores Number of cores for parallel computing. Defaults to the total number of cores available on the
@@ -88,9 +88,9 @@
 #' }
 #' @export
 
-equivtest.cord = function(object, coeffs, term=NULL, object0=NULL, 
+equivtest.cord = function(object, coeffs, term=NULL, object0=NULL,
   stats=NULL, test="LR", nsim=999, ncores=detectCores()-1, show.time=TRUE) {
-  
+
   ptm = proc.time()
 
   check_equivtest_args(coeffs, object0)
@@ -113,7 +113,7 @@ equivtest.cord = function(object, coeffs, term=NULL, object0=NULL,
     stat_obs = stat_obs,
     coefficients = coeffs,
     term = term,
-    stats = stats, 
+    stats = stats,
     test = anova_obj$test,
     cor.type = anova_obj$cor.type,
     resamp = anova_obj$resamp,
@@ -155,10 +155,10 @@ get_object0 = function(object, term, object0) {
     if (length(labels(terms(object))) > 1) {
       term_position = grep(term, attr(object$terms, "term.labels"))
       object0 = update(
-        object, 
+        object,
         formula = drop.terms(
-          object$terms, 
-          term_position, 
+          object$terms,
+          term_position,
           keep.response = TRUE
         )
       )

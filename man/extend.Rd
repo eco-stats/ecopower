@@ -86,9 +86,9 @@ object from the simulated responses.
 }
 \section{Functions}{
 \itemize{
-\item \code{extend}: Simulate or extend multivariate abundance data
-}}
+\item \code{extend()}: Simulate or extend multivariate abundance data
 
+}}
 \examples{
 library(ecoCopula)
 library(mvabund)
