@@ -34,7 +34,6 @@
 #' @param alpha Type I error rate for power estimate, defaults to \code{0.05}.
 #' @param newdata Data frame of the same size as the original data frame from the \code{\link[ecoCopula]{cord}} object
 #' (\code{object$obj$data}), that specifies a different design of interest.
-#' @param n_replicate Number of unique replicates of the original data frame. Defaults to \code{NULL}, overwrites \code{N} if specified.
 #' @param ncores Number of cores for parallel computing. Defaults to the total number of cores available on the
 #' machine minus 1.
 #' @param show.time Logical. Displays time elapsed. Defaults to \code{TRUE}.
@@ -92,10 +91,10 @@
 
 powersim.cord = function(object, coeffs, term, N=nrow(object$obj$data),
    coeffs0=effect_null(object$obj, term), nsim=1000,ncrit=999, test="score",
-   alpha=0.05, newdata=NULL, n_replicate=NULL,
-   ncores=detectCores()-1, show.time=TRUE, long_power=FALSE, n.samp=10, nlv=2) {
+   alpha=0.05, newdata=NULL, ncores=detectCores()-1, show.time=TRUE,
+   long_power=FALSE, n.samp=10, nlv=2) {
 
-
+  n_replicate=NULL
   check_coeffs(coeffs)
   if (long_power==FALSE){
   stats.null = rep(NA,ncrit)
