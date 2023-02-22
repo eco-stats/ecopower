@@ -32,8 +32,8 @@ extend = function(object, N=nrow(object$obj$data), coeffs=coef(object$obj),
 #' @export
 powersim = function(object, coeffs, term, N=nrow(object$obj$data),
   coeffs0=effect_null(object$obj, term), nsim=999,ncrit=nsim, test="score",
-  alpha=0.05, newdata=NULL, ncores=detectCores()-1,
-  show.time=TRUE, long_power=FALSE, n.samp=10,nlv=2) {
+  alpha=0.05, newdata=NULL, n_replicate=NULL,
+  ncores=detectCores()-1, show.time=TRUE, long_power=FALSE, n.samp=10,nlv=2) {
 
   UseMethod("powersim")
 }
