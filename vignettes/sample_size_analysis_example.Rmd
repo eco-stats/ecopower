@@ -121,7 +121,7 @@ powersim(fit.cord, N=100, coeff.alt, term="Site.Type", nsim=50, ncrit=49, newdat
 
 Based on this initial power simulation we would need more samples in order to obtain the conventional power target of $80\%$.
 
-
+ 
 ## Produce a single power curve:
 
 In order to answer our first experimental design question, we can estimate power across a range of sample sizes for an effect size of $20\%$ differences in mean abundance. By plotting the results, we can observe the sample size required to reliably detect (with a conventional power target of $80\%$) the effect of interest. 
