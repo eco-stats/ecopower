@@ -14,12 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(ecopower)
+```{r setup, include = FALSE}
+options(rmarkdown.html_vignette.check_title = FALSE)
+knitr::opts_knit$set(global.par = TRUE)
 ```
 
-
-# Sample size analysis example
 
 This example comes directly from [Maslen et. al. 2023](https://arxiv.org/abs/2206.09524), for more details behind the methodology go to this paper. If you use this package for sample size analysis in an associated paper or otherwise, please cite [Maslen et. al. 2023](https://arxiv.org/abs/2206.09524).
 
@@ -42,7 +41,7 @@ Ecopower can be installed from CRAN using `install.packages('ecopower')`, howeve
 #devtools::install_github("BenMaslen/ecopower")
 
 #load libraries
-#library(ecopower)
+library(ecopower)
 library(mvabund)
 library(ecoCopula)
 library(ggplot2)
@@ -104,16 +103,17 @@ Note that we could have just started out fitting a model to only restored and co
 
 ```{r}
 fish_data_sim            <- fish_data
-fish_data_sim$Site.Type  <- factor(dplyr::recode(fish_data$Site.Type, reference = "restored"))
+fish_data_sim$Site.Type[fish_data_sim$Site.Type=="reference"] <- "restored"
+fish_data_sim$Site.Type  <- factor(fish_data_sim$Site.Type)
 ```
 
 ### Undergo single power simulation:
 
 Let's start by estimating power for a single sample size specification.
 
-Below we calculate power for a sample size of $N=100$ using our pre-specified effect size (```coeff.alt```) of $20\%$ differences in mean abundance.
+Below we calculate power for a sample size of $N=100$ using our pre-specified effect size (`coeff.alt`) of $20\%$ differences in mean abundance.
 
-Note that nsim and ncrit have been set to 50 and 49 respectively in order to run timely, however in practice you would want to set these to larger values (we recommend setting ```nsim=1000``` and ```ncrit=4999```) to get a more accurate estimate of power.
+Note that nsim and ncrit have been set to 50 and 49 respectively in order to run timely, however in practice you would want to set these to larger values (we recommend setting `nsim=1000` and `ncrit=4999`) to get a more accurate estimate of power.
 
 ```{r}
 powersim(fit.cord, N=100, coeff.alt, term="Site.Type", nsim=50, ncrit=49, newdata = fish_data_sim)
@@ -165,9 +165,9 @@ Thus we have answered our first experimental design question!
 
 In order to answer the second experimental design question, we can estimate and then plot multiple effect size curves for different effect size specifications (let's do this for effect sizes of $10\%, 20\%, \ldots, 100\%$ changes in mean abundance by specifying effect_size$=1.1, 1.2, \ldots, 2$. We will also do this across sample sizes that we can sample using a balanced sampling design (from $N=4,6,\ldots,24$). 
 
-As we are simulating from copula models with small sample sizes, we will also increase n.samp (number of simulations for importance sampling in copula modelling) and decrease nlv to 1 (number of latent factors in the copula) as recommended in the ```cord``` function description.
+As we are simulating from copula models with small sample sizes, we will also increase n.samp (number of simulations for importance sampling in copula modelling) and decrease nlv to 1 (number of latent factors in the copula) as recommended in the `cord` function description.
 
-Note: The below code takes ~30minutes-2hours to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. If you want to run this code and reduce computation time, you can reduce ```nsim``` or ```ncrit```, however this will also make power estimates more variable.
+Note: The below code takes ~30minutes-2hours to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. If you want to run this code and reduce computation time, you can reduce `nsim` or `ncrit`, however this will also make power estimates more variable.
 
 First we estimate power at each sample size and effect size of interest:
 
@@ -247,7 +247,7 @@ coeff.alt           <- effect_alt(fit, effect_size = 1.2, increasers, decreasers
 
 Now we can estimate power with these changes.
 
-Note: The below code takes ~20minutes-2hours to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. If you want to run this code and reduce computation time, you can reduce ```nsim``` or ```ncrit```, however this will also make power estimates more variable.
+Note: The below code takes ~20minutes-2hours to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. If you want to run this code and reduce computation time, you can reduce `nsim` or `ncrit`, however this will also make power estimates more variable.
 
 ```{r,eval=FALSE}
 sample_sizes <- c(10, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300)
@@ -275,10 +275,12 @@ powercurve_experiment_dat <- data.frame(sample_sizes = rep(sample_sizes, 3),
 #plot power curve
 ggplot(powercurve_experiment_dat, aes(x = sample_sizes, y = Power, colour = Method)) +
   geom_line(size = 1.1) + theme_bw() + geom_hline(yintercept = 0.8, linetype = "dashed", color = "red", size = 1) +
-  xlab("N") + ylab("Power") + scale_x_continuous(breaks = sample_sizes) + theme(legend.text.align = 0)+
-  scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1.0)) + scale_colour_manual(values = c("#D55E00", "#56B4E9", "#009E73"),
-                                                                          labels=c("Halve overdispersion", "Original",
-                                                                                   expression(paste("No " , italic(A.strigatus)))))
+  xlab("N") + ylab("Power") + scale_x_continuous(breaks = sample_sizes) + theme(legend.text.align = 0) +
+  scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1.0)) +
+  scale_colour_manual(
+    values = c("#D55E00", "#56B4E9", "#009E73"),
+    labels = c("Halve overdispersion", "Original", expression(paste("No " , italic(A.strigatus))))
+  )
 ```
 
 Here we can observe that halving the amount of overdispersion in our simulations increased power by as much as $25\%$ and when we changed our most abundant species *Atypichthys.strigatus* from an 'increaser' to a 'no effect' taxa, power would in some cases decrease by as much as $20\%$.
