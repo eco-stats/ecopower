@@ -23,7 +23,6 @@ LazyData: true
 License: LGPL (>= 2.1)
 RoxygenNote: 7.2.1
 Suggests: 
-    knitr,
-    rmarkdown,
-    testthat
+    knitr, rmarkdown, testthat,
+    ggplot2, RColorBrewer
 VignetteBuilder: knitr
