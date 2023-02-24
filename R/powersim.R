@@ -45,6 +45,11 @@
 #' @param nlv number of latent variables (default = 2) for the copula model with cord, recommend setting this lower for smaller sample sizes \code{N}.
 #' @return Power estimate result, and;
 #' \item{\code{power}}{power.}
+#' @section Author(s):
+#' Ben Maslen <b.maslen@unsw.edu.au>.
+#' @section References:
+#' Maslen, B., Popovic, G., Vergés, A., Marzinelli, E., & Warton, D. (2022). How many sites? Methods to assist design decisions when collecting multivariate data in ecology. arXiv preprint arXiv:2206.09524.
+#' Popovic, G. C., Hui, F. K., & Warton, D. I. (2018). A general algorithm for covariance modeling of discrete data. Journal of Multivariate Analysis, 165, 86-100.
 #' @seealso \code{\link{effect_alt}}, \code{\link{effect_null}}, \code{\link{extend}}
 #' @import ecoCopula
 #' @import mvabund

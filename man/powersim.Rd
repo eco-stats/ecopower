@@ -110,6 +110,17 @@ machine (\code{detectCores()-1}) is recommended to better avoid errors relating 
 \item \code{powersim()}: Provide power estimates for multivariate abundance models
 
 }}
+\section{Author(s)}{
+
+Ben Maslen <b.maslen@unsw.edu.au>.
+}
+
+\section{References}{
+
+Maslen, B., Popovic, G., Vergés, A., Marzinelli, E., & Warton, D. (2022). How many sites? Methods to assist design decisions when collecting multivariate data in ecology. arXiv preprint arXiv:2206.09524.
+Popovic, G. C., Hui, F. K., & Warton, D. I. (2018). A general algorithm for covariance modeling of discrete data. Journal of Multivariate Analysis, 165, 86-100.
+}
+
 \examples{
 \donttest{
 library(ecoCopula)

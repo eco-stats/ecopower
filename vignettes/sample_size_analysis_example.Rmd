@@ -68,7 +68,7 @@ fish_data$Site.Type <- factor(fish_data$Site.Type, levels = c("control", "restor
 
 Below we first fit a `manyglm model`, and then a copula model using the `cord` function from the `ecoCopula` package to our pilot data as our data generating model.
 
-```{r}
+```{r,fig.show='hold'}
 #fit the model
 fit       <- manyglm(fish ~ Site.Type, family = "negative.binomial", data = fish_data)
 fit.cord  <- cord(fit)
@@ -289,3 +289,21 @@ For further details behind the methodology please go to [Maslen et. al. 2023](ht
 
 If you use this package for sample size analysis in an associated paper or otherwise, please cite [Maslen et. al. 2023](https://arxiv.org/abs/2206.09524).
 
+
+### References
+
+Campbell, A. H., Marzinelli, E. M., Verges, A., Coleman, M. A., & Steinberg, P. D. (2014). Towards restoration of missing underwater forests. PloS one, 9(1), e84106.
+
+Coleman, M. A., Kelaher, B. P., Steinberg, P. D., & Millar, A. J. (2008). Absence of a large brown macroalga on urbanized rocky reefs around Sydney, Australia, and evidence for historical decline 1. Journal of phycology, 44(4), 897-901.
+
+Marzinelli, E. M., Campbell, A. H., Vergés, A., Coleman, M. A., Kelaher, B. P., & Steinberg, P. D. (2014). Restoring seaweeds: does the declining fucoid Phyllospora comosa support different biodiversity than other habitats?. Journal of Applied Phycology, 26, 1089-1096.
+
+Marzinelli, E. M., Leong, M. R., Campbell, A. H., Steinberg, P. D., & Vergés, A. (2016). Does restoration of a habitat‐forming seaweed restore associated faunal diversity?. Restoration Ecology, 24(1), 81-90.
+
+Maslen, B., Popovic, G., Vergés, A., Marzinelli, E., & Warton, D. (2022). How many sites? Methods to assist design decisions when collecting multivariate data in ecology. arXiv preprint arXiv:2206.09524.
+
+Popovic, G. C., Hui, F. K., & Warton, D. I. (2018). A general algorithm for covariance modeling of discrete data. Journal of Multivariate Analysis, 165, 86-100.
+
+Vergés, A., Campbell, A. H., Wood, G., Kajlich, L., Eger, A. M., Cruz, D., Langley, M., Bolton, D., Coleman, M.A., Turpin, J., et al. (2020). Operation Crayweed: Ecological and sociocultural aspects of restoring Sydney’s underwater forests. Ecological Management & Restoration, 21(2), 74-85.
+
+Wood, G., Marzinelli, E. M., Coleman, M. A., Campbell, A. H., Santini, N. S., Kajlich, L., ... & Vergés, A. (2019). Restoring subtidal marine macrophytes in the Anthropocene: trajectories and future-proofing. Marine and Freshwater Research, 70(7), 936-951.
