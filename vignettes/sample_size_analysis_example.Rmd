@@ -14,6 +14,10 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r setup}
+library(ecopower)
+```
+
 
 # Sample size analysis example
 
@@ -33,12 +37,12 @@ In this example we attempt to answer the following experimental design questions
 
 Ecopower can be installed from CRAN using `install.packages('ecopower')`, however for the latest version users can install from github with `devtools::install_github("BenMaslen/ecopower")`.
 
-```{r setup, warning=FALSE,message=FALSE}
+```{r, warning=FALSE,message=FALSE}
 #to install latest version of ecopower on github:
 #devtools::install_github("BenMaslen/ecopower")
 
 #load libraries
-library(ecopower)
+#library(ecopower)
 library(mvabund)
 library(ecoCopula)
 library(ggplot2)
