@@ -18,6 +18,9 @@ authors:
     email: michelle.lim@unsw.edu.au
     affiliation: UNSW
     orcid: 'https://orcid.org/0000-0002-4891-7761'
+version: 0.2.0
+doi: 10.5281/zenodo.7679303
+date-released: 2023-02-27
 identifiers:
   - type: doi
     value: 10.5281/zenodo.7679303
