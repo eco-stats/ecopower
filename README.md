@@ -11,6 +11,5 @@ install.packages("ecopower")
 
 For the development version with the latest bells and whistles:
 ```r
-# install.packages("devtools")
-devtools::install_github("BenMaslen/ecopower")
+remotes::install_github("BenMaslen/ecopower", dependencies = T, build_vignettes = T)
 ```
