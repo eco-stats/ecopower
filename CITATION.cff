@@ -1,0 +1,40 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: ecopower
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Ben
+    family-names: Maslen
+    email: b.maslen@unsw.edu.au
+    affiliation: UNSW
+    orcid: 'https://orcid.org/0000-0003-3475-6247'
+  - given-names: Michelle
+    family-names: Lim
+    email: michelle.lim@unsw.edu.au
+    affiliation: UNSW
+    orcid: 'https://orcid.org/0000-0002-4891-7761'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.7679303
+repository-code: 'https://github.com/BenMaslen/ecopower'
+url: 'https://github.com/BenMaslen/ecopower'
+repository: 'https://CRAN.R-project.org/package=ecopower'
+abstract: >-
+  R package for sample size analysis and equivalence testing
+  of multivariate abundance data.
+keywords:
+  - Power analysis
+  - Sample size
+  - Multivariate
+  - Equivalence test
+  - Ecology
+  - Statistics
+  - Simulation
+  - R
+  - Study design
+  - Community abundance
