@@ -117,7 +117,7 @@ Ben Maslen <b.maslen@unsw.edu.au>.
 
 \section{References}{
 
-Maslen, B., Popovic, G., Vergés, A., Marzinelli, E., & Warton, D. (2022). How many sites? Methods to assist design decisions when collecting multivariate data in ecology. arXiv preprint arXiv:2206.09524.
+Maslen, B., Popovic, G., Lim, M., Marzinelli, E., & Warton, D. (2023). How many sites? Methods to assist design decisions when collecting multivariate data in ecology. Methods in Ecology and Evolution, 14(6), 1564-1573.
 Popovic, G. C., Hui, F. K., & Warton, D. I. (2018). A general algorithm for covariance modeling of discrete data. Journal of Multivariate Analysis, 165, 86-100.
 }
 
