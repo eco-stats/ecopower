@@ -1,7 +1,7 @@
 Package: ecopower
 Type: Package
 Title: Power Estimates and Equivalence Testing for Multivariate Data
-Version: 0.2.0
+Version: 0.2.0.9000
 Authors@R: c(
     person("Ben", "Maslen", role = "aut"),
     person("Michelle", "Lim", email = "michelle.lim@unsw.edu.au", role = c("aut", "cre"))
