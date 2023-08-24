@@ -7,7 +7,7 @@ check_coeffs = function (coeffs) {
 check_equivtest_args = function (coeffs, object0) {
   check_coeffs(coeffs)
   
-  if (!is.null(object0) && class(object0) != "cord") {
+  if (!is.null(object0) && !inherits(object0, "cord")) {
     stop("object0 is not of class cord")
   }
 }
