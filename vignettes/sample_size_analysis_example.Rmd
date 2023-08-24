@@ -34,7 +34,7 @@ In this example we attempt to answer the following experimental design questions
 
 ### Load packages:
 
-Ecopower can be installed from CRAN using `install.packages("ecopower")`, however for the latest version users can install from github with `devtools::install_github("BenMaslen/ecopower")`.
+Ecopower can be installed from CRAN using `install.packages("ecopower")`, however for the latest version users can install from GitHub with `devtools::install_github("BenMaslen/ecopower")`.
 
 ```{r, warning=FALSE,message=FALSE}
 #to install latest version of ecopower on github:
@@ -50,7 +50,7 @@ library(RColorBrewer)
 
 ### Read in data:
 
-The first 34 columns of the `fish` data set make up the multivarate abundance matrix of fish counts across our 9 sites.
+The first 34 columns of the `fish` data set make up the multivariate abundance matrix of fish counts across our 9 sites.
 
 ```{r}
 #read in data
