@@ -7,7 +7,10 @@ utils::globalVariables(c(
   "do.fit",
   "test",
   "term",
-  "object0"
+  "object0",
+  "n.samp",
+  "nlv",
+  "nsim"
 ))
 
 MVApowerstat = function(stats, coeffs) {
@@ -64,7 +67,8 @@ MVApowerstat_long_alt = function(stats, coeffs) {
     },finally={})
   }
 
-  extended_data <<- data.frame(alt_mod$obj$x)
+  # extended_data <<- data.frame(alt_mod$obj$x)
+  assign("extended_data", data.frame(alt_mod$obj$x), inherits=TRUE)
   coeffs0_l = effect_null(alt_mod$obj, term=term)
 
   stat = anova(alt_mod$obj,

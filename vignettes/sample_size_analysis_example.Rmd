@@ -20,11 +20,11 @@ knitr::opts_knit$set(global.par = TRUE)
 ```
 
 
-This example comes directly from [Maslen et. al. 2023](https://arxiv.org/abs/2206.09524), for more details behind the methodology go to this paper. If you use this package for sample size analysis in an associated paper or otherwise, please cite [Maslen et. al. 2023](https://arxiv.org/abs/2206.09524).
+This example comes directly from [Maslen et al. 2023](https://doi.org/10.1111/2041-210X.14094), for more details behind the methodology go to this paper. If you use this package for sample size analysis in an associated paper or otherwise, please cite [Maslen et al. 2023](https://doi.org/10.1111/2041-210X.14094).
 
 ## Crayweed restoration project
 
-Researchers within the Operation Crayweed Restoration Project in Sydney are restoring the locally extinct macro-algae *Phyllospora comosa* ("crayweed": see [Coleman et al., 2008](https://onlinelibrary.wiley.com/doi/full/10.1111/j.1529-8817.2008.00541.x); [Campbell et al., 2014](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0084106); [Verg ́es et al., 2020](https://onlinelibrary.wiley.com/doi/full/10.1111/emr.12413) and are interested in the effect of this restoration on associated ecological communities ([Marzinelli et al., 2014](https://link.springer.com/article/10.1007/s10811-013-0158-5), [2016](https://onlinelibrary.wiley.com/doi/full/10.1111/rec.12292); [Wood et al., 2019](https://www.publish.csiro.au/mf/MF18226)). Pilot data have already been collected, where the abundance of fish species in nine open ocean sites have been recorded in 2015. We are interested in observing if there is a change in mean fish abundance between control sites (those in Sydney without crayweed) and restored sites (similar
+Researchers within the Operation Crayweed Restoration Project in Sydney are restoring the locally extinct macro-algae *Phyllospora comosa* ("crayweed": see [Coleman et al., 2008](https://doi.org/10.1111/j.1529-8817.2008.00541.x); [Campbell et al., 2014](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0084106); [Vergés et al., 2020](https://doi.org/10.1111/emr.12413) and are interested in the effect of this restoration on associated ecological communities ([Marzinelli et al., 2014](https://link.springer.com/article/10.1007/s10811-013-0158-5), [2016](https://doi.org/10.1111/rec.12292); [Wood et al., 2019](https://www.publish.csiro.au/mf/MF18226)). Pilot data have already been collected, where the abundance of fish species in nine open ocean sites have been recorded in 2015. We are interested in observing if there is a change in mean fish abundance between control sites (those in Sydney without crayweed) and restored sites (similar
 sites where crayweed has recently been transplanted). There are plans to collect more data in the future, however there is an upper bound of approximately 24 possible spatially independent restored or control coastal bays/sites within the Sydney region and surroundings.
 
 In this example we attempt to answer the following experimental design questions:
@@ -34,7 +34,7 @@ In this example we attempt to answer the following experimental design questions
 
 ### Load packages:
 
-Ecopower can be installed from CRAN using `install.packages('ecopower')`, however for the latest version users can install from github with `devtools::install_github("BenMaslen/ecopower")`.
+Ecopower can be installed from CRAN using `install.packages("ecopower")`, however for the latest version users can install from GitHub with `devtools::install_github("BenMaslen/ecopower")`.
 
 ```{r, warning=FALSE,message=FALSE}
 #to install latest version of ecopower on github:
@@ -50,14 +50,15 @@ library(RColorBrewer)
 
 ### Read in data:
 
-The first 34 columns of the 'fish_data' data set make up the multivarate abundance matrix of fish counts across our 9 sites.
+The first 34 columns of the `fish` data set make up the multivariate abundance matrix of fish counts across our 9 sites.
 
 ```{r}
 #read in data
-data("fish_data")
+data("fish")
 
 #create mvabund abundance matrix
-fish <- mvabund(fish_data[, 1:34])
+fish_data <- fish
+abund <- mvabund(fish_data[, 1:34])
 
 #set Site.Type as a factor
 fish_data$Site.Type <- factor(fish_data$Site.Type, levels = c("control", "restored", "reference"))
@@ -65,11 +66,11 @@ fish_data$Site.Type <- factor(fish_data$Site.Type, levels = c("control", "restor
 
 ### Fit a model to the data: 
 
-Below we first fit a `manyglm model`, and then a copula model using the `cord` function from the `ecoCopula` package to our pilot data as our data generating model.
+Below we first fit a `manyglm` model, and then a copula model using the `cord` function from the `ecoCopula` package to our pilot data as our data generating model.
 
-```{r,fig.show='hold'}
+```{r, fig.height=5, fig.width=7}
 #fit the model
-fit       <- manyglm(fish ~ Site.Type, family = "negative.binomial", data = fish_data)
+fit       <- manyglm(abund ~ Site.Type, family = "negative.binomial", data = fish_data)
 fit.cord  <- cord(fit)
 
 #check model assumptions
@@ -97,7 +98,7 @@ coeff.alt <- effect_alt(fit, effect_size = 1.2, increasers, decreasers, term = "
 
 ### Recode restored sites to reference:
 
-Notice in the original pilot data we have three treatments but are only interested in comparing control vs. restored sites. In order to simulate under only control and restored sites, we can create a new dataset where reference sites have been relabeled as restored (below - fish_data_sim) and simulate under this design using the 'newdata' argument in powersim.
+Notice in the original pilot data we have three treatments but are only interested in comparing control vs. restored sites. In order to simulate under only control and restored sites, we can create a new dataset where reference sites have been relabeled as restored (below - `fish_data_sim`) and simulate under this design using the `newdata` argument in `powersim()`.
 
 Note that we could have just started out fitting a model to only restored and control sites, however we would lose samples that could be used to help estimate nuisance parameters like overdispersion and covariance. Thus we are effectively 'borrowing strength' from the reference sites to help in the estimation of our nuisance parameters.
 
@@ -113,10 +114,10 @@ Let's start by estimating power for a single sample size specification.
 
 Below we calculate power for a sample size of $N=100$ using our pre-specified effect size (`coeff.alt`) of $20\%$ differences in mean abundance.
 
-Note that nsim and ncrit have been set to 50 and 49 respectively in order to run timely, however in practice you would want to set these to larger values (we recommend setting `nsim=1000` and `ncrit=4999`) to get a more accurate estimate of power.
+Note that `nsim` and `ncrit` have been set to 50 and 49 respectively in order to run timely, however in practice you would want to set these to larger values (we recommend setting `nsim=1000` and `ncrit=4999`) to get a more accurate estimate of power.
 
 ```{r}
-powersim(fit.cord, N=100, coeff.alt, term="Site.Type", nsim=50, ncrit=49, newdata = fish_data_sim)
+powersim(fit.cord, N=100, coeff.alt, term="Site.Type", nsim=50, ncrit=49, newdata = fish_data_sim, ncores=2)
 ```
 
 Based on this initial power simulation we would need more samples in order to obtain the conventional power target of $80\%$.
@@ -126,9 +127,9 @@ Based on this initial power simulation we would need more samples in order to ob
 
 In order to answer our first experimental design question, we can estimate power across a range of sample sizes for an effect size of $20\%$ differences in mean abundance. By plotting the results, we can observe the sample size required to reliably detect (with a conventional power target of $80\%$) the effect of interest. 
 
-Users could also plot multiple power curves to get an idea of the variability in the power estimates (as in [Maslen et. al. 2023](https://arxiv.org/abs/2206.09524)).
+Users could also plot multiple power curves to get an idea of the variability in the power estimates (as in [Maslen et al. 2023](https://doi.org/10.1111/2041-210X.14094)).
 
-Note: The below code takes ~10minutes-1hour to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. If you want to run this code and reduce computation time, you can reduce ```nsim``` or ```ncrit```, however this will also make power estimates more variable.
+Note: The below code takes ~10minutes-1hour to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. Instead, the resultant figure has been added for reference. If you want to run this code and reduce computation time, you can reduce `nsim` or `ncrit`, however this will also make power estimates more variable.
 
 First we estimate power at each sample size of interest:
 
@@ -157,6 +158,10 @@ ggplot(powercurve_dat, aes(x = sample_sizes, y = Power)) +
   scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1.0))
 ```
 
+```{r, echo=FALSE, out.width="95%"}
+knitr::include_graphics("figure_1.jpg")
+```
+
 This suggests that we require a sample size of at-least $N \approx 150$ in order to likely detect $20\%$ changes in mean abundances, using a conventional power target of $80\%$.
 
 Thus we have answered our first experimental design question!
@@ -165,9 +170,9 @@ Thus we have answered our first experimental design question!
 
 In order to answer the second experimental design question, we can estimate and then plot multiple effect size curves for different effect size specifications (let's do this for effect sizes of $10\%, 20\%, \ldots, 100\%$ changes in mean abundance by specifying effect_size$=1.1, 1.2, \ldots, 2$. We will also do this across sample sizes that we can sample using a balanced sampling design (from $N=4,6,\ldots,24$). 
 
-As we are simulating from copula models with small sample sizes, we will also increase n.samp (number of simulations for importance sampling in copula modelling) and decrease nlv to 1 (number of latent factors in the copula) as recommended in the `cord` function description.
+As we are simulating from copula models with small sample sizes, we will also increase `n.samp` (number of simulations for importance sampling in copula modelling) and decrease `nlv` to 1 (number of latent factors in the copula) as recommended in the `cord` function description.
 
-Note: The below code takes ~30minutes-2hours to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. If you want to run this code and reduce computation time, you can reduce `nsim` or `ncrit`, however this will also make power estimates more variable.
+Note: The below code takes ~30minutes-2hours to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. Instead, the resultant figure has been added for reference. If you want to run this code and reduce computation time, you can reduce `nsim` or `ncrit`, however this will also make power estimates more variable.
 
 First we estimate power at each sample size and effect size of interest:
 
@@ -208,6 +213,10 @@ ggplot(mult_powercurve_dat, aes(x = sample_sizes, y = power_estimates, colour = 
   scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1.0)) + scale_color_brewer(palette = "Paired", direction = -1, name = "% change")
 ```
 
+```{r, echo=FALSE, out.width="95%"}
+knitr::include_graphics("figure_2.jpg")
+```
+
 In the above plot we can observe that under the maximum balanced sample size of $N=24$ sites, the smallest effect size to be observed under a conventional power target of $80\%$ is effect_size$\approx 1.7$, or equivalently $70 \%$ changes in the mean abundances of fish species. The pilot survey included $N_{\text{pilot}}=9$ sites, which would not be able to reliably detect any of the simulated effect sizes.
 
 Thus we have answered our second experimental design question!
@@ -216,7 +225,7 @@ Note that we could also have just produced a single power curve here for a sampl
 
 ## Sensitivity analysis:
 
-As mentioned in [Maslen et. al. 2023](https://arxiv.org/abs/2206.09524) it is also a good idea to check how sensitive our prior assumptions are in generating our effect size of interest and estimating power.
+As mentioned in [Maslen et al. 2023](https://doi.org/10.1111/2041-210X.14094) it is also a good idea to check how sensitive our prior assumptions are in generating our effect size of interest and estimating power.
 
 Let's produce some power curves where we play around with the most abundant species and alter the overdispersion parameter, to see how sensitive our power estimates are based on these parameters.
 
@@ -247,7 +256,7 @@ coeff.alt           <- effect_alt(fit, effect_size = 1.2, increasers, decreasers
 
 Now we can estimate power with these changes.
 
-Note: The below code takes ~20minutes-2hours to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. If you want to run this code and reduce computation time, you can reduce `nsim` or `ncrit`, however this will also make power estimates more variable.
+Note: The below code takes ~20minutes-2hours to run depending on the speed of your computer and the number of logical processors you have. As such, this code has not been evaluated by default. Instead, the resultant figure has been added for reference. If you want to run this code and reduce computation time, you can reduce `nsim` or `ncrit`, however this will also make power estimates more variable.
 
 ```{r,eval=FALSE}
 sample_sizes <- c(10, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300)
@@ -283,18 +292,22 @@ ggplot(powercurve_experiment_dat, aes(x = sample_sizes, y = Power, colour = Meth
   )
 ```
 
+```{r, echo=FALSE, out.width="95%"}
+knitr::include_graphics("figure_3.jpg")
+```
+
 Here we can observe that halving the amount of overdispersion in our simulations increased power by as much as $25\%$ and when we changed our most abundant species *Atypichthys.strigatus* from an 'increaser' to a 'no effect' taxa, power would in some cases decrease by as much as $20\%$.
 
 This demonstrates how sensitive our prior assumptions can be on resulting power, and in particular for abundant species.
 
-For further details behind the methodology please go to [Maslen et. al. 2023](https://arxiv.org/abs/2206.09524), or for examples with more complicated effect size specifications go to the examples within ecopower.
+For further details behind the methodology please go to [Maslen et al. 2023](https://doi.org/10.1111/2041-210X.14094), or for examples with more complicated effect size specifications go to the examples within ecopower.
 
-If you use this package for sample size analysis in an associated paper or otherwise, please cite [Maslen et. al. 2023](https://arxiv.org/abs/2206.09524).
+If you use this package for sample size analysis in an associated paper or otherwise, please cite [Maslen et al. 2023](https://doi.org/10.1111/2041-210X.14094).
 
 
 ### References
 
-Campbell, A. H., Marzinelli, E. M., Verges, A., Coleman, M. A., & Steinberg, P. D. (2014). Towards restoration of missing underwater forests. PloS one, 9(1), e84106.
+Campbell, A. H., Marzinelli, E. M., Vergés, A., Coleman, M. A., & Steinberg, P. D. (2014). Towards restoration of missing underwater forests. PloS one, 9(1), e84106.
 
 Coleman, M. A., Kelaher, B. P., Steinberg, P. D., & Millar, A. J. (2008). Absence of a large brown macroalga on urbanized rocky reefs around Sydney, Australia, and evidence for historical decline 1. Journal of phycology, 44(4), 897-901.
 
@@ -302,10 +315,10 @@ Marzinelli, E. M., Campbell, A. H., Vergés, A., Coleman, M. A., Kelaher, B. P.,
 
 Marzinelli, E. M., Leong, M. R., Campbell, A. H., Steinberg, P. D., & Vergés, A. (2016). Does restoration of a habitat‐forming seaweed restore associated faunal diversity?. Restoration Ecology, 24(1), 81-90.
 
-Maslen, B., Popovic, G., Vergés, A., Marzinelli, E., & Warton, D. (2022). How many sites? Methods to assist design decisions when collecting multivariate data in ecology. arXiv preprint arXiv:2206.09524.
+Maslen, B., Popovic, G., Lim, M., Marzinelli, E., & Warton, D. (2023). How many sites? Methods to assist design decisions when collecting multivariate data in ecology. Methods in Ecology and Evolution, 14(6), 1564-1573.
 
 Popovic, G. C., Hui, F. K., & Warton, D. I. (2018). A general algorithm for covariance modeling of discrete data. Journal of Multivariate Analysis, 165, 86-100.
 
 Vergés, A., Campbell, A. H., Wood, G., Kajlich, L., Eger, A. M., Cruz, D., Langley, M., Bolton, D., Coleman, M.A., Turpin, J., et al. (2020). Operation Crayweed: Ecological and sociocultural aspects of restoring Sydney’s underwater forests. Ecological Management & Restoration, 21(2), 74-85.
 
-Wood, G., Marzinelli, E. M., Coleman, M. A., Campbell, A. H., Santini, N. S., Kajlich, L., ... & Vergés, A. (2019). Restoring subtidal marine macrophytes in the Anthropocene: trajectories and future-proofing. Marine and Freshwater Research, 70(7), 936-951.
+Wood, G., Marzinelli, E. M., Coleman, M. A., Campbell, A. H., Santini, N. S., Kajlich, L., Verdura, J., Wodak, J., Steinberg, P.D., & Vergés, A. (2019). Restoring subtidal marine macrophytes in the Anthropocene: trajectories and future-proofing. Marine and Freshwater Research, 70(7), 936-951.

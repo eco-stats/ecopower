@@ -1,0 +1,65 @@
+#' Fish dataset
+#'
+#' Dataset of fish abundances and associated environmental variables.
+#'
+#' @name fish
+#' @docType data
+#'
+#' @usage data(fish)
+#'
+#' @format An object of class \code{"data.frame"} containing:
+#' \describe{
+#'   \item{fish}{A data frame with nine observations of abundance of 34 fish species, and five site-related variables.}
+#' }
+#' @details
+#' The matrix \code{abund} has the following species abundances:
+#' \itemize{
+#'   \item Abudefduf.sp
+#'   \item Acanthurus.nigrofuscus
+#'   \item Achoerodus.viridis
+#'   \item Aplodactylus.lophodon
+#'   \item Atypichthys.strigatus
+#'   \item Baitfish
+#'   \item Brachaluteres.jacksonianus
+#'   \item Chaeotodon.auriga
+#'   \item Cheilodactylus.fuscus
+#'   \item Chromis.hypsilepis
+#'   \item Girella.elevata
+#'   \item Girella.tricuspidata
+#'   \item Heterodontus.portusjacksoni
+#'   \item Kyphosus.sydneyanus
+#'   \item Latropiscis.purpurissatus
+#'   \item Meuschenia.spp
+#'   \item Microcanthus.strigatus
+#'   \item Naso.unicornis
+#'   \item Notolabrus.gymnogenis
+#'   \item Olisthops.cyanomelas
+#'   \item Ophthalmolepis.lineolatus
+#'   \item Pagrus.auratus
+#'   \item Parma.microlepis
+#'   \item Parma.unifasciata
+#'   \item Parupeneus.signatus
+#'   \item Pempheris.compressa
+#'   \item Pictilabrus.laticlavius
+#'   \item Prionurus.maculatus
+#'   \item Prionurus.microlepidotus
+#'   \item Scorpis.lineolatus
+#'   \item Seriola.lalandi
+#'   \item Seriola.sp
+#'   \item Trachinops.taeniatus
+#'   \item Unidentified.wrasse
+#'   \item Site.Type - control / reference / restored
+#'   \item Site.Name - location of site
+#'   \item Viz - visibility in metres
+#'   \item Temp - temperature in degrees Celsius
+#'   \item Depth - depth in metres
+#' }
+#' 
+#' @references Data attributed to the crayweed restoration project (\url{http://www.operationcrayweed.com/}).
+#' @keywords datasets
+#' @examples
+#'
+#' data(fish)
+#' head(fish)
+#'
+NULL
