@@ -1,201 +1,43 @@
-# -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.5.0
-# See also: https://docs.ropensci.org/cffr/
-# -----------------------------------------------------------
- 
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
 cff-version: 1.2.0
-message: 'To cite package "ecopower" in publications use:'
+title: ecopower
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
 type: software
-license: LGPL-2.0-or-later
-title: 'ecopower: Power Estimates and Equivalence Testing for Multivariate Data'
-version: 0.2.0
-abstract: Estimates power by simulation for multivariate abundance data to be used
-  for sample size estimates. Multivariate equivalence testing by simulation from a
-  Gaussian copula model. The package also provides functions for parameterising multivariate
-  effect sizes and simulating multivariate abundance data jointly. The discrete Gaussian
-  copula approach is described in Popovic et al. (2018) <doi:10.1016/j.jmva.2017.12.002>.
 authors:
-- family-names: Maslen
-  given-names: Ben
-- family-names: Lim
-  given-names: Michelle
-  email: michelle.lim@unsw.edu.au
-repository: https://CRAN.R-project.org/package=ecopower
-contact:
-- family-names: Lim
-  given-names: Michelle
-  email: michelle.lim@unsw.edu.au
-references:
-- type: software
-  title: 'R: A Language and Environment for Statistical Computing'
-  notes: Depends
-  url: https://www.R-project.org/
-  authors:
-  - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
-  institution:
-    name: R Foundation for Statistical Computing
-  version: '>= 3.5.0'
-- type: software
-  title: parallel
-  abstract: 'R: A Language and Environment for Statistical Computing'
-  notes: Imports
-  authors:
-  - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
-  institution:
-    name: R Foundation for Statistical Computing
-- type: software
-  title: mvabund
-  abstract: 'mvabund: Statistical Methods for Analysing Multivariate Abundance Data'
-  notes: Imports
-  repository: https://CRAN.R-project.org/package=mvabund
-  authors:
-  - family-names: Wang
-    given-names: Yi
-  - family-names: Naumann
-    given-names: Ulrike
-  - family-names: Eddelbuettel
-    given-names: Dirk
-  - family-names: Wilshire
-    given-names: John
-  - family-names: Warton
-    given-names: David
-    email: David.Warton@unsw.edu.au
-  year: '2023'
-- type: software
-  title: ecoCopula
-  abstract: 'ecoCopula: Graphical Modelling and Ordination using Copulas'
-  notes: Imports
-  repository: https://CRAN.R-project.org/package=ecoCopula
-  authors:
-  - family-names: Popovic
-    given-names: Gordana
-    email: g.popovic@unsw.edu.au
-  year: '2023'
-- type: software
-  title: stats
-  abstract: 'R: A Language and Environment for Statistical Computing'
-  notes: Imports
-  authors:
-  - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
-  institution:
-    name: R Foundation for Statistical Computing
-- type: software
-  title: knitr
-  abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
-  notes: Suggests
-  url: https://yihui.org/knitr/
-  repository: https://CRAN.R-project.org/package=knitr
-  authors:
-  - family-names: Xie
-    given-names: Yihui
-    email: xie@yihui.name
-    orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2023'
-- type: software
-  title: rmarkdown
-  abstract: 'rmarkdown: Dynamic Documents for R'
-  notes: Suggests
-  url: https://pkgs.rstudio.com/rmarkdown/
-  repository: https://CRAN.R-project.org/package=rmarkdown
-  authors:
-  - family-names: Allaire
-    given-names: JJ
-    email: jj@posit.co
-  - family-names: Xie
-    given-names: Yihui
-    email: xie@yihui.name
-    orcid: https://orcid.org/0000-0003-0645-5666
-  - family-names: Dervieux
-    given-names: Christophe
-    email: cderv@posit.co
-    orcid: https://orcid.org/0000-0003-4474-2498
-  - family-names: McPherson
-    given-names: Jonathan
-    email: jonathan@posit.co
-  - family-names: Luraschi
-    given-names: Javier
-  - family-names: Ushey
-    given-names: Kevin
-    email: kevin@posit.co
-  - family-names: Atkins
-    given-names: Aron
-    email: aron@posit.co
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-  - family-names: Cheng
-    given-names: Joe
-    email: joe@posit.co
-  - family-names: Chang
-    given-names: Winston
-    email: winston@posit.co
-  - family-names: Iannone
-    given-names: Richard
-    email: rich@posit.co
-    orcid: https://orcid.org/0000-0003-3925-190X
-  year: '2023'
-- type: software
-  title: testthat
-  abstract: 'testthat: Unit Testing for R'
-  notes: Suggests
-  url: https://testthat.r-lib.org
-  repository: https://CRAN.R-project.org/package=testthat
-  authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-  year: '2023'
-- type: software
-  title: ggplot2
-  abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
-  notes: Suggests
-  url: https://ggplot2.tidyverse.org
-  repository: https://CRAN.R-project.org/package=ggplot2
-  authors:
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@posit.co
-    orcid: https://orcid.org/0000-0003-4757-117X
-  - family-names: Chang
-    given-names: Winston
-    orcid: https://orcid.org/0000-0002-1576-2126
-  - family-names: Henry
-    given-names: Lionel
-  - family-names: Pedersen
-    given-names: Thomas Lin
-    email: thomas.pedersen@posit.co
-    orcid: https://orcid.org/0000-0002-5147-4711
-  - family-names: Takahashi
-    given-names: Kohske
-  - family-names: Wilke
-    given-names: Claus
-    orcid: https://orcid.org/0000-0002-7470-9261
-  - family-names: Woo
-    given-names: Kara
-    orcid: https://orcid.org/0000-0002-5125-4188
-  - family-names: Yutani
-    given-names: Hiroaki
-    orcid: https://orcid.org/0000-0002-3385-7233
-  - family-names: Dunnington
-    given-names: Dewey
-    orcid: https://orcid.org/0000-0002-9415-4582
-  year: '2023'
-- type: software
-  title: RColorBrewer
-  abstract: 'RColorBrewer: ColorBrewer Palettes'
-  notes: Suggests
-  repository: https://CRAN.R-project.org/package=RColorBrewer
-  authors:
-  - family-names: Neuwirth
-    given-names: Erich
-    email: erich.neuwirth@univie.ac.at
-  year: '2023'
+  - given-names: Ben
+    family-names: Maslen
+    email: b.maslen@unsw.edu.au
+    affiliation: UNSW
+    orcid: 'https://orcid.org/0000-0003-3475-6247'
+  - given-names: Michelle
+    family-names: Lim
+    email: michelle.lim@unsw.edu.au
+    affiliation: UNSW
+    orcid: 'https://orcid.org/0000-0002-4891-7761'
+version: 0.2.0
+doi: 10.5281/zenodo.8279990
+date-released: 2023-08-24
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.8279990
+repository-code: 'https://github.com/BenMaslen/ecopower'
+url: 'https://github.com/BenMaslen/ecopower'
+repository: 'https://CRAN.R-project.org/package=ecopower'
+abstract: >-
+  R package for sample size analysis and equivalence testing
+  of multivariate abundance data.
+keywords:
+  - Power analysis
+  - Sample size
+  - Multivariate
+  - Equivalence test
+  - Ecology
+  - Statistics
+  - Simulation
+  - R
+  - Study design
+  - Community abundance
