@@ -3,15 +3,18 @@ Type: Package
 Title: Power Estimates and Equivalence Testing for Multivariate Data
 Version: 0.2.0.9000
 Authors@R: c(
-    person("Ben", "Maslen", role = "aut"),
-    person("Michelle", "Lim", email = "michelle.lim@unsw.edu.au", role = c("aut", "cre"))
+    person("Ben", "Maslen", role = "aut",
+        comment = c(ORCID = "0000-0003-3475-6247")),
+    person("Michelle", "Lim", email = "michelle.lim@unsw.edu.au",
+        role = c("aut", "cre"), comment = c(ORCID = "0000-0002-4891-7761"))
     )
 Description: Estimates power by simulation for multivariate
     abundance data to be used for sample size estimates. Multivariate
     equivalence testing by simulation from a Gaussian copula model.
     The package also provides functions for parameterising multivariate effect
-    sizes and simulating multivariate abundance data jointly. The discrete
-    Gaussian copula approach is described in
+    sizes and simulating multivariate abundance data jointly. Power estimation
+    is detailed in Maslen et al. (2023) <doi:10.1111/2041-210X.14094>, and the
+    discrete Gaussian copula approach is described in
     Popovic et al. (2018) <doi:10.1016/j.jmva.2017.12.002>.
 Depends: R (>= 3.5.0)
 Imports: parallel,
