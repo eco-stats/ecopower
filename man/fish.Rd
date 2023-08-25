@@ -17,7 +17,7 @@ data(fish)
 Dataset of fish abundances and associated environmental variables.
 }
 \details{
-The matrix \code{abund} has the following species abundances:
+The data frame \code{fish} has the following species abundances and variables:
 \itemize{
   \item Abudefduf.sp
   \item Acanthurus.nigrofuscus

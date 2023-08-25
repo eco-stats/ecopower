@@ -12,7 +12,7 @@
 #'   \item{fish}{A data frame with nine observations of abundance of 34 fish species, and five site-related variables.}
 #' }
 #' @details
-#' The matrix \code{abund} has the following species abundances:
+#' The data frame \code{fish} has the following species abundances and variables:
 #' \itemize{
 #'   \item Abudefduf.sp
 #'   \item Acanthurus.nigrofuscus
