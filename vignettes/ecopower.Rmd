@@ -1,8 +1,8 @@
 ---
-title: "Sample size analysis example"
+title: "ecopower"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Sample size analysis example}
+  %\VignetteIndexEntry{ecopower}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -10,15 +10,14 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  global.par = TRUE
 )
-```
 
-```{r setup, include = FALSE}
+library(here)
+
 options(rmarkdown.html_vignette.check_title = FALSE)
-knitr::opts_knit$set(global.par = TRUE)
 ```
-
 
 This example comes directly from [Maslen et al. 2023](https://doi.org/10.1111/2041-210X.14094), for more details behind the methodology go to this paper. If you use this package for sample size analysis in an associated paper or otherwise, please cite [Maslen et al. 2023](https://doi.org/10.1111/2041-210X.14094).
 
@@ -159,7 +158,7 @@ ggplot(powercurve_dat, aes(x = sample_sizes, y = Power)) +
 ```
 
 ```{r, echo=FALSE, out.width="95%"}
-knitr::include_graphics("figure_1.jpg")
+knitr::include_graphics(here("vignettes/figure_1.jpg"), rel_path = FALSE)
 ```
 
 This suggests that we require a sample size of at-least $N \approx 150$ in order to likely detect $20\%$ changes in mean abundances, using a conventional power target of $80\%$.
@@ -214,7 +213,7 @@ ggplot(mult_powercurve_dat, aes(x = sample_sizes, y = power_estimates, colour = 
 ```
 
 ```{r, echo=FALSE, out.width="95%"}
-knitr::include_graphics("figure_2.jpg")
+knitr::include_graphics(here("vignettes/figure_2.jpg"), rel_path = FALSE)
 ```
 
 In the above plot we can observe that under the maximum balanced sample size of $N=24$ sites, the smallest effect size to be observed under a conventional power target of $80\%$ is effect_size$\approx 1.7$, or equivalently $70 \%$ changes in the mean abundances of fish species. The pilot survey included $N_{\text{pilot}}=9$ sites, which would not be able to reliably detect any of the simulated effect sizes.
@@ -293,7 +292,7 @@ ggplot(powercurve_experiment_dat, aes(x = sample_sizes, y = Power, colour = Meth
 ```
 
 ```{r, echo=FALSE, out.width="95%"}
-knitr::include_graphics("figure_3.jpg")
+knitr::include_graphics(here("vignettes/figure_3.jpg"), rel_path = FALSE)
 ```
 
 Here we can observe that halving the amount of overdispersion in our simulations increased power by as much as $25\%$ and when we changed our most abundant species *Atypichthys.strigatus* from an 'increaser' to a 'no effect' taxa, power would in some cases decrease by as much as $20\%$.
