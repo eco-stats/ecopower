@@ -183,7 +183,7 @@ test_that("simulate smaller size: N simulation", {
 
   returned = extend(fit1.cord, N=2)$data
   expect_equal(nrow(returned), 2)
-  expect_false(any(is.null(returned)))
+  expect_false(any(is.null(returned)))f
   expect_equal(
     colnames(returned)[1:ncol(spiddat)], colnames(spiddat)
   )
@@ -257,20 +257,20 @@ context("get_new_fit")
 test_that("do.fit=TRUE returns manyglm object", {
 
   returned = extend(fit1.cord, do.fit=TRUE)
-  expect_is(returned, "manyglm")
+  expect_s3_class(returned, "manyglm")
 
 })
 
 test_that("class of returned object data", {
 
   returned = extend(fit1.cord, do.fit=TRUE)
-  expect_is(returned$data, "data.frame")
+  expect_s3_class(returned$data, "data.frame")
 
 })
 
 test_that("do.fit=FALSE returns a data.frame", {
 
   returned = extend(fit1.cord)$data
-  expect_is(returned, "data.frame")
+  expect_s3_class(returned, "data.frame")
 
 })
