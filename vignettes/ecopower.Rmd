@@ -37,7 +37,7 @@ Ecopower can be installed from CRAN using `install.packages("ecopower")`, howeve
 
 ```{r, warning=FALSE,message=FALSE}
 #to install latest version of ecopower on github:
-#devtools::install_github("BenMaslen/ecopower")
+#devtools::install_github("eco-stats/ecopower")
 
 #load libraries
 library(ecopower)
