@@ -8,9 +8,7 @@ test_that("extend - class of object: cord object", {
 
 })
 
-context("compute_N")
-
-test_that("n_replicate overwrites N", {
+test_that("compute_N: n_replicate overwrites N", {
 
   expect_warning(
     extend(fit1.cord, n_replicate=2)
@@ -18,9 +16,8 @@ test_that("n_replicate overwrites N", {
 
 })
 
-context("check extended data")
 
-test_that("N simulation", {
+test_that("check extended data: N simulation", {
 
   for (fit in list(fit1.cord, fit2.cord, fit_fac4.cord, fit_mth.cord, fit_mix.cord)) {
 
@@ -183,7 +180,7 @@ test_that("simulate smaller size: N simulation", {
 
   returned = extend(fit1.cord, N=2)$data
   expect_equal(nrow(returned), 2)
-  expect_false(any(is.null(returned)))f
+  expect_false(any(is.null(returned)))
   expect_equal(
     colnames(returned)[1:ncol(spiddat)], colnames(spiddat)
   )
@@ -252,9 +249,7 @@ test_that("intercept model - with or without data specified", {
 
 })
 
-context("get_new_fit")
-
-test_that("do.fit=TRUE returns manyglm object", {
+test_that("get_new_fit: do.fit=TRUE returns manyglm object", {
 
   returned = extend(fit1.cord, do.fit=TRUE)
   expect_s3_class(returned, "manyglm")
