@@ -1,6 +1,6 @@
-context("extend - class of object")
 
-test_that("cord object", {
+
+test_that("extend - class of object: cord object", {
 
   expect_error(
     extend(fit1.glm)
@@ -54,9 +54,8 @@ test_that("n_replicate simulation", {
 
 })
 
-context("intercept model")
 
-test_that("do.fit=FALSE, no data specified", {
+test_that("intercept model: do.fit=FALSE, no data specified", {
 
   returned = extend(fit0.cord, N=nrow(spiddat)*2)$data
   returned1 = extend(fit0.cord, N=NULL, n_replicate=2)$data
@@ -100,9 +99,7 @@ test_that("do.fit=TRUE, data specified", {
 
 })
 
-context("newdata - new factor")
-
-test_that("N simulation - new factor", {
+test_that("newdata - new factor: N simulation - new factor", {
 
   for (fit in list(fit_fac2.cord, fit_mth.cord)) {
 
@@ -136,9 +133,8 @@ test_that("n_replicate simulation - new factor", {
 
 })
 
-context("newdata - new vector")
 
-test_that("N simulation - new vector, imexplicit N", {
+test_that("newdata - new vector: N simulation - new vector, imexplicit N", {
 
   returned = extend(fit_vec.cord, newdata=Xvec2)$data
   expect_equal(nrow(returned), 28)
@@ -182,9 +178,8 @@ test_that("n_replicate simulation - new vector", {
 
 })
 
-context("simulate smaller size")
 
-test_that("N simulation", {
+test_that("simulate smaller size: N simulation", {
 
   returned = extend(fit1.cord, N=2)$data
   expect_equal(nrow(returned), 2)

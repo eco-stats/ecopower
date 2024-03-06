@@ -1,6 +1,5 @@
-context("equivtest - class of object")
 
-test_that("cord object", {
+test_that("equivtest - class of object: cord object", {
 
   expect_error(
     equivtest(fit1.glm, effect_mat, term_cont)
@@ -8,9 +7,8 @@ test_that("cord object", {
 
 })
 
-context("equivtest - check input args")
 
-test_that("coeffs exist", {
+test_that("equivtest - check input args: coeffs exist", {
 
   expect_error(
     equivtest(fit1.cord, NULL)

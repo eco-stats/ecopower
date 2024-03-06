@@ -1,6 +1,4 @@
-context("effect_null - class of object")
-
-test_that("manyglm object", {
+test_that("effect_null - class of object: manyglm object", {
 
   expect_error(
     effect_null(fit1.cord, term_cont)
@@ -8,9 +6,7 @@ test_that("manyglm object", {
 
 })
 
-context("effect_null matrix")
-
-test_that("term_cont", {
+test_that("effect_null matrix: term_cont", {
 
   for (fit in list(fit1.glm, fit2.glm)) {
     returned = effect_null(fit, term_cont)
@@ -62,9 +58,7 @@ test_that("coeffs == coeffs0, two covariates", {
 
 })
 
-context("effect_null - term")
-
-test_that("interaction term", {
+test_that("effect_null - term: interaction term", {
 
   expect_error(
     effect_null(fit_int.glm, "bare.sand:Treatment2B")
@@ -80,9 +74,7 @@ test_that("type of term", {
 
 })
 
-context("effect_null - object")
-
-test_that("model without intercept", {
+test_that("effect_null - object: model without intercept", {
 
   expect_error(
     effect_null(fit00.glm, term_cont)

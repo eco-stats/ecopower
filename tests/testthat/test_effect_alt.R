@@ -1,6 +1,4 @@
-context("effect_alt - class of object")
-
-test_that("manyglm object", {
+test_that("effect_alt - class of object: manyglm object", {
 
   expect_error(
     effect_alt(fit1.cord, effect_size, increasers, decreasers, term_cont)
@@ -8,9 +6,7 @@ test_that("manyglm object", {
 
 })
 
-context("effect_alt matrix")
-
-test_that("term_cont", {
+test_that("effect_alt matrix: term_cont", {
 
   for (fit in list(fit1.glm, fit2.glm)) {
     returned = effect_alt(fit, effect_size, increasers, decreasers, term_cont)
@@ -34,9 +30,7 @@ test_that("term_factors", {
 
 })
 
-context("effect_alt - effect size")
-
-test_that("increasers, decreasers and no_effect - term_cont", {
+test_that("effect_alt - effect size: increasers, decreasers and no_effect - term_cont", {
 
   for (fit in list(fit1.glm, fit2.glm)) {
     returned = effect_alt(fit, effect_size, increasers, decreasers, term_cont)
@@ -97,9 +91,8 @@ test_that("increasers, decreasers and no_effect - nlevels = 4", {
 
 })
 
-context("effect_alt - K")
 
-test_that("K = term levels - 1", {
+test_that("effect_alt - K: K = term levels - 1", {
 
   for (K in c(2,5)) {
 
